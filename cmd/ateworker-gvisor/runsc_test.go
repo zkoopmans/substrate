@@ -356,6 +356,50 @@ func TestRestoreArgs(t *testing.T) {
 	}
 }
 
+func TestPauseArgs(t *testing.T) {
+	r := &runsc{
+		path:      "/usr/bin/runsc",
+		actorUID:  "test-actor-123",
+		actorDirs: testActorDirs,
+		flags:     mustFlagStore(t),
+	}
+
+	got := r.pauseArgs(ocispec.PauseContainer)
+	want := []string{
+		"-global1",
+		"-global2",
+		"-root", "/node/actors/test-actor-123/runsc-state",
+		"pause",
+		ocispec.PauseContainer,
+	}
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("pauseArgs() = %v, want %v", got, want)
+	}
+}
+
+func TestResumeArgs(t *testing.T) {
+	r := &runsc{
+		path:      "/usr/bin/runsc",
+		actorUID:  "test-actor-123",
+		actorDirs: testActorDirs,
+		flags:     mustFlagStore(t),
+	}
+
+	got := r.resumeArgs(ocispec.PauseContainer)
+	want := []string{
+		"-global1",
+		"-global2",
+		"-root", "/node/actors/test-actor-123/runsc-state",
+		"resume",
+		ocispec.PauseContainer,
+	}
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("resumeArgs() = %v, want %v", got, want)
+	}
+}
+
 func TestRestoreWorkloadRejectsEmptyRestoreDir(t *testing.T) {
 	s := &AteWorkerService{
 		locks:    actorlock.New(),

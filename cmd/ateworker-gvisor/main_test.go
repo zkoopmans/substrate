@@ -30,6 +30,7 @@ import (
 
 	"google.golang.org/grpc/codes"
 
+	"go.ate.dev/substrate/internal/actorlock"
 	"go.ate.dev/substrate/internal/actorlog"
 	"go.ate.dev/substrate/internal/apierror"
 	"go.ate.dev/substrate/internal/ateattr"
@@ -63,6 +64,14 @@ func TestRPCsRejectInvalidRequests(t *testing.T) {
 		},
 		"GetWorkloadStats": func() error {
 			_, err := s.GetWorkloadStats(ctx, &ateworkerpb.GetWorkloadStatsRequest{})
+			return err
+		},
+		"FreezeWorkload": func() error {
+			_, err := s.FreezeWorkload(ctx, &ateworkerpb.FreezeWorkloadRequest{})
+			return err
+		},
+		"ThawWorkload": func() error {
+			_, err := s.ThawWorkload(ctx, &ateworkerpb.ThawWorkloadRequest{})
 			return err
 		},
 	} {
@@ -342,5 +351,48 @@ func TestValidateRunscPathRequiresTheActorsOwnDir(t *testing.T) {
 				t.Errorf("code = %v, want %v", apierror.Code(err), codes.InvalidArgument)
 			}
 		})
+}
+}
+
+func TestFreezeAndThawValidation(t *testing.T) {
+	s := &AteWorkerService{
+		locks:    actorlock.New(),
+		inFlight: actorlock.NewInFlight(),
+		actors:   make(map[string]*hostedActor),
+	}
+	ctx := context.Background()
+
+	// 1. Missing actor UID
+	_, err := s.FreezeWorkload(ctx, &ateworkerpb.FreezeWorkloadRequest{})
+	if apierror.Code(err) != codes.InvalidArgument {
+		t.Errorf("FreezeWorkload(empty UID) = %v, want InvalidArgument", err)
+	}
+	_, err = s.ThawWorkload(ctx, &ateworkerpb.ThawWorkloadRequest{})
+	if apierror.Code(err) != codes.InvalidArgument {
+		t.Errorf("ThawWorkload(empty UID) = %v, want InvalidArgument", err)
+	}
+
+	// 2. Unknown actor UID
+	_, err = s.FreezeWorkload(ctx, &ateworkerpb.FreezeWorkloadRequest{ActorUid: "non-existent"})
+	if apierror.Code(err) != codes.NotFound {
+		t.Errorf("FreezeWorkload(unknown UID) = %v, want NotFound", err)
+	}
+	_, err = s.ThawWorkload(ctx, &ateworkerpb.ThawWorkloadRequest{ActorUid: "non-existent"})
+	if apierror.Code(err) != codes.NotFound {
+		t.Errorf("ThawWorkload(unknown UID) = %v, want NotFound", err)
+	}
+
+	// 3. Actor hosted without active session
+	s.actorsMu.Lock()
+	s.actors["actor-1"] = &hostedActor{}
+	s.actorsMu.Unlock()
+
+	_, err = s.FreezeWorkload(ctx, &ateworkerpb.FreezeWorkloadRequest{ActorUid: "actor-1"})
+	if apierror.Code(err) != codes.FailedPrecondition {
+		t.Errorf("FreezeWorkload(no session) = %v, want FailedPrecondition", err)
+	}
+	_, err = s.ThawWorkload(ctx, &ateworkerpb.ThawWorkloadRequest{ActorUid: "actor-1"})
+	if apierror.Code(err) != codes.FailedPrecondition {
+		t.Errorf("ThawWorkload(no session) = %v, want FailedPrecondition", err)
 	}
 }

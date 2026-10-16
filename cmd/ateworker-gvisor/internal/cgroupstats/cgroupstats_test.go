@@ -15,11 +15,14 @@
 package cgroupstats
 
 import (
+	"context"
 	"errors"
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -292,5 +295,70 @@ func TestReadMalformedMemoryCurrent(t *testing.T) {
 	}
 	if errors.Is(err, fs.ErrNotExist) {
 		t.Errorf("Read() error = %v, want one that does not match fs.ErrNotExist", err)
+	}
+}
+
+func TestFreezeAndThaw(t *testing.T) {
+	dir := writeCgroup(t, map[string]string{
+		"cgroup.events": "populated 1\nfrozen 0\n",
+	})
+
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+
+	// Simulate kernel asynchronously updating cgroup.events to frozen 1 when cgroup.freeze is written.
+	go func() {
+		for {
+			b, err := os.ReadFile(filepath.Join(dir, "cgroup.freeze"))
+			if err == nil && strings.TrimSpace(string(b)) == "1" {
+				_ = os.WriteFile(filepath.Join(dir, "cgroup.events"), []byte("populated 1\nfrozen 1\n"), 0o644)
+				return
+			}
+			time.Sleep(5 * time.Millisecond)
+		}
+	}()
+
+	if err := Freeze(ctx, dir); err != nil {
+		t.Fatalf("Freeze() failed: %v", err)
+	}
+
+	freezeVal, err := os.ReadFile(filepath.Join(dir, "cgroup.freeze"))
+	if err != nil || strings.TrimSpace(string(freezeVal)) != "1" {
+		t.Errorf("cgroup.freeze = %q, want 1", string(freezeVal))
+	}
+
+	// Now simulate thawing
+	go func() {
+		for {
+			b, err := os.ReadFile(filepath.Join(dir, "cgroup.freeze"))
+			if err == nil && strings.TrimSpace(string(b)) == "0" {
+				_ = os.WriteFile(filepath.Join(dir, "cgroup.events"), []byte("populated 1\nfrozen 0\n"), 0o644)
+				return
+			}
+			time.Sleep(5 * time.Millisecond)
+		}
+	}()
+
+	if err := Thaw(ctx, dir); err != nil {
+		t.Fatalf("Thaw() failed: %v", err)
+	}
+
+	freezeVal, err = os.ReadFile(filepath.Join(dir, "cgroup.freeze"))
+	if err != nil || strings.TrimSpace(string(freezeVal)) != "0" {
+		t.Errorf("cgroup.freeze = %q, want 0", string(freezeVal))
+	}
+}
+
+func TestSetMemoryLow(t *testing.T) {
+	dir := t.TempDir()
+	if err := SetMemoryLow(dir, 40*1024*1024); err != nil {
+		t.Fatalf("SetMemoryLow() failed: %v", err)
+	}
+	content, err := os.ReadFile(filepath.Join(dir, "memory.low"))
+	if err != nil {
+		t.Fatalf("reading memory.low: %v", err)
+	}
+	if strings.TrimSpace(string(content)) != "41943040" {
+		t.Errorf("memory.low = %q, want 41943040", string(content))
 	}
 }

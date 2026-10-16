@@ -39,6 +39,8 @@ const (
 	Worker_GetWorkloadStats_FullMethodName       = "/ateworker.Worker/GetWorkloadStats"
 	Worker_GetActiveWorkloadStats_FullMethodName = "/ateworker.Worker/GetActiveWorkloadStats"
 	Worker_TerminateWorkload_FullMethodName      = "/ateworker.Worker/TerminateWorkload"
+	Worker_FreezeWorkload_FullMethodName         = "/ateworker.Worker/FreezeWorkload"
+	Worker_ThawWorkload_FullMethodName           = "/ateworker.Worker/ThawWorkload"
 )
 
 // WorkerClient is the client API for Worker service.
@@ -125,6 +127,12 @@ type WorkerClient interface {
 	// TerminateWorkload stops and deletes container workloads and cleans up
 	// network and bundle overlays on the worker.
 	TerminateWorkload(ctx context.Context, in *TerminateWorkloadRequest, opts ...grpc.CallOption) (*TerminateWorkloadResponse, error)
+	// FreezeWorkload pauses the guest runtime and freezes the sandbox cgroup in-place,
+	// reducing CPU burn to 0.00% and halting the Sentry monotonic clock while keeping
+	// memory resident in RAM for fast sub-millisecond resume.
+	FreezeWorkload(ctx context.Context, in *FreezeWorkloadRequest, opts ...grpc.CallOption) (*FreezeWorkloadResponse, error)
+	// ThawWorkload thaws the sandbox cgroup and resumes guest execution immediately.
+	ThawWorkload(ctx context.Context, in *ThawWorkloadRequest, opts ...grpc.CallOption) (*ThawWorkloadResponse, error)
 }
 
 type workerClient struct {
@@ -189,6 +197,26 @@ func (c *workerClient) TerminateWorkload(ctx context.Context, in *TerminateWorkl
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(TerminateWorkloadResponse)
 	err := c.cc.Invoke(ctx, Worker_TerminateWorkload_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *workerClient) FreezeWorkload(ctx context.Context, in *FreezeWorkloadRequest, opts ...grpc.CallOption) (*FreezeWorkloadResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FreezeWorkloadResponse)
+	err := c.cc.Invoke(ctx, Worker_FreezeWorkload_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *workerClient) ThawWorkload(ctx context.Context, in *ThawWorkloadRequest, opts ...grpc.CallOption) (*ThawWorkloadResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ThawWorkloadResponse)
+	err := c.cc.Invoke(ctx, Worker_ThawWorkload_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -279,6 +307,12 @@ type WorkerServer interface {
 	// TerminateWorkload stops and deletes container workloads and cleans up
 	// network and bundle overlays on the worker.
 	TerminateWorkload(context.Context, *TerminateWorkloadRequest) (*TerminateWorkloadResponse, error)
+	// FreezeWorkload pauses the guest runtime and freezes the sandbox cgroup in-place,
+	// reducing CPU burn to 0.00% and halting the Sentry monotonic clock while keeping
+	// memory resident in RAM for fast sub-millisecond resume.
+	FreezeWorkload(context.Context, *FreezeWorkloadRequest) (*FreezeWorkloadResponse, error)
+	// ThawWorkload thaws the sandbox cgroup and resumes guest execution immediately.
+	ThawWorkload(context.Context, *ThawWorkloadRequest) (*ThawWorkloadResponse, error)
 	mustEmbedUnimplementedWorkerServer()
 }
 
@@ -306,6 +340,12 @@ func (UnimplementedWorkerServer) GetActiveWorkloadStats(context.Context, *GetAct
 }
 func (UnimplementedWorkerServer) TerminateWorkload(context.Context, *TerminateWorkloadRequest) (*TerminateWorkloadResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method TerminateWorkload not implemented")
+}
+func (UnimplementedWorkerServer) FreezeWorkload(context.Context, *FreezeWorkloadRequest) (*FreezeWorkloadResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method FreezeWorkload not implemented")
+}
+func (UnimplementedWorkerServer) ThawWorkload(context.Context, *ThawWorkloadRequest) (*ThawWorkloadResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ThawWorkload not implemented")
 }
 func (UnimplementedWorkerServer) mustEmbedUnimplementedWorkerServer() {}
 func (UnimplementedWorkerServer) testEmbeddedByValue()                {}
@@ -436,6 +476,42 @@ func _Worker_TerminateWorkload_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Worker_FreezeWorkload_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FreezeWorkloadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WorkerServer).FreezeWorkload(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Worker_FreezeWorkload_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WorkerServer).FreezeWorkload(ctx, req.(*FreezeWorkloadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Worker_ThawWorkload_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ThawWorkloadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WorkerServer).ThawWorkload(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Worker_ThawWorkload_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WorkerServer).ThawWorkload(ctx, req.(*ThawWorkloadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Worker_ServiceDesc is the grpc.ServiceDesc for Worker service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -466,6 +542,14 @@ var Worker_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TerminateWorkload",
 			Handler:    _Worker_TerminateWorkload_Handler,
+		},
+		{
+			MethodName: "FreezeWorkload",
+			Handler:    _Worker_FreezeWorkload_Handler,
+		},
+		{
+			MethodName: "ThawWorkload",
+			Handler:    _Worker_ThawWorkload_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

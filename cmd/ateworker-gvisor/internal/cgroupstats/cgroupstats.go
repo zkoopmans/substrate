@@ -26,6 +26,7 @@ package cgroupstats
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"fmt"
 	"io/fs"
@@ -33,6 +34,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // Sample is a point-in-time reading of one cgroup v2 directory.
@@ -74,6 +76,10 @@ type Sample struct {
 	// in the cgroup. It reads false when the file is absent, so a kernel that
 	// does not say is never taken for a dead sandbox.
 	Empty bool
+
+	// Frozen is true when cgroup.events reports frozen 1: all processes in the
+	// cgroup are currently suspended.
+	Frozen bool
 }
 
 // Read returns a Sample for the cgroup v2 directory at dir.
@@ -107,6 +113,7 @@ func Read(dir string) (Sample, error) {
 	cpuUsage, _, _ := readKeyedUint(filepath.Join(dir, "cpu.stat"), "usage_usec")
 	oomKills, _, _ := readKeyedUint(filepath.Join(dir, "memory.events"), "oom_kill")
 	populated, havePopulated, _ := readKeyedUint(filepath.Join(dir, "cgroup.events"), "populated")
+	frozen, haveFrozen, _ := readKeyedUint(filepath.Join(dir, "cgroup.events"), "frozen")
 
 	// Without inactive_file there is nothing to subtract, so the working set
 	// collapses to memory.current. That over-reports by however much reclaimable
@@ -131,7 +138,64 @@ func Read(dir string) (Sample, error) {
 		CPUUsageUsec:          cpuUsage,
 		OOMKills:              oomKills,
 		Empty:                 havePopulated && populated == 0,
+		Frozen:                haveFrozen && frozen == 1,
 	}, nil
+}
+
+// Freeze sets cgroup.freeze to 1 in dir and waits for cgroup.events to report frozen 1.
+// If ctx expires before the cgroup is fully frozen, Freeze returns an error.
+func Freeze(ctx context.Context, dir string) error {
+	return setFreezeState(ctx, dir, 1)
+}
+
+// Thaw sets cgroup.freeze to 0 in dir and waits for cgroup.events to report frozen 0.
+// If ctx expires before the cgroup is fully thawed, Thaw returns an error.
+func Thaw(ctx context.Context, dir string) error {
+	return setFreezeState(ctx, dir, 0)
+}
+
+func setFreezeState(ctx context.Context, dir string, targetVal uint64) error {
+	freezePath := filepath.Join(dir, "cgroup.freeze")
+	eventsPath := filepath.Join(dir, "cgroup.events")
+
+	valStr := "0\n"
+	if targetVal == 1 {
+		valStr = "1\n"
+	}
+	if err := os.WriteFile(freezePath, []byte(valStr), 0o644); err != nil {
+		return fmt.Errorf("writing %q: %w", freezePath, err)
+	}
+
+	// Poll cgroup.events for target frozen state.
+	sleepDur := 1 * time.Millisecond
+	for {
+		frozen, ok, err := readKeyedUint(eventsPath, "frozen")
+		if err != nil {
+			return err
+		}
+		if ok && frozen == targetVal {
+			return nil
+		}
+
+		select {
+		case <-ctx.Done():
+			return fmt.Errorf("waiting for %s frozen %d: %w", eventsPath, targetVal, ctx.Err())
+		case <-time.After(sleepDur):
+			if sleepDur < 20*time.Millisecond {
+				sleepDur *= 2
+			}
+		}
+	}
+}
+
+// SetMemoryLow sets memory.low to bytes in dir.
+func SetMemoryLow(dir string, bytes uint64) error {
+	path := filepath.Join(dir, "memory.low")
+	content := fmt.Sprintf("%d\n", bytes)
+	if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
+		return fmt.Errorf("writing %q: %w", path, err)
+	}
+	return nil
 }
 
 // readUint reads a cgroup file holding a single unsigned integer. The bool

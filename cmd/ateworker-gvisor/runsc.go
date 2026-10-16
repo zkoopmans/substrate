@@ -258,6 +258,40 @@ func (r *runsc) cmdDelete(ctx context.Context, containerName string) error {
 	return nil
 }
 
+// pauseArgs builds the argv for `runsc pause <container>`. Factored out so the
+// argument construction can be unit-tested without executing runsc.
+func (r *runsc) pauseArgs(containerName string) []string {
+	return r.buildArgs("pause", containerName)
+}
+
+func (r *runsc) cmdPause(ctx context.Context, containerName string) error {
+	slog.InfoContext(ctx, "About to run runsc pause", slog.String("container", containerName))
+	cmd := exec.CommandContext(ctx, r.path, r.pauseArgs(containerName)...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("while running `runsc pause`: %w", err)
+	}
+	return nil
+}
+
+// resumeArgs builds the argv for `runsc resume <container>`. Factored out so
+// the argument construction can be unit-tested without executing runsc.
+func (r *runsc) resumeArgs(containerName string) []string {
+	return r.buildArgs("resume", containerName)
+}
+
+func (r *runsc) cmdResume(ctx context.Context, containerName string) error {
+	slog.InfoContext(ctx, "About to run runsc resume", slog.String("container", containerName))
+	cmd := exec.CommandContext(ctx, r.path, r.resumeArgs(containerName)...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("while running `runsc resume`: %w", err)
+	}
+	return nil
+}
+
 func (r *runsc) cmdState(ctx context.Context, containerName string) error {
 	cmd := exec.CommandContext(
 		ctx,

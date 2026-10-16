@@ -314,6 +314,8 @@ const (
 	rpcRunWorkload        = "RunWorkload"
 	rpcRestoreWorkload    = "RestoreWorkload"
 	rpcCheckpointWorkload = "CheckpointWorkload"
+	rpcFreezeWorkload     = "FreezeWorkload"
+	rpcThawWorkload       = "ThawWorkload"
 )
 
 // workloadSession captures the in-memory metadata for the workload currently running
@@ -921,6 +923,86 @@ func (s *AteWorkerService) CheckpointWorkload(ctx context.Context, req *ateworke
 		slog.WarnContext(ctx, "Failed to record checkpoint completion marker", slog.String("actorUID", req.GetActorUid()), slog.Any("err", err))
 	}
 	return resp, nil
+}
+
+// FreezeWorkload pauses the guest runtime and freezes the sandbox cgroup.
+func (s *AteWorkerService) FreezeWorkload(ctx context.Context, req *ateworkerpb.FreezeWorkloadRequest) (*ateworkerpb.FreezeWorkloadResponse, error) {
+	if req.GetActorUid() == "" {
+		return nil, apierror.InvalidArgument("actor_uid is required")
+	}
+	if !s.locks.Lock(ctx, req.GetActorUid()) {
+		return nil, fmt.Errorf("gave up waiting for the actor's lock: %w", ctx.Err())
+	}
+	defer s.locks.Unlock(req.GetActorUid())
+
+	defer s.inFlight.Add(req.GetActorUid(), rpcFreezeWorkload, nil)()
+
+	hosted := s.lookupActor(req.GetActorUid())
+	if hosted == nil {
+		return nil, apierror.NotFound("worker is not executing actor %q", req.GetActorUid())
+	}
+	if hosted.session == nil || hosted.session.rcmd == nil {
+		return nil, apierror.FailedPrecondition("actor %q has no active session", req.GetActorUid())
+	}
+
+	cgroupDir := filepath.Join(s.cgroupRoot, ocispec.GVisorCgroupLeaf(req.GetActorUid(), sandboxCgroupContainer))
+
+	// 1. Pause the sandbox tasks via runsc pause. This also pauses Timekeeper.
+	if err := hosted.session.rcmd.cmdPause(ctx, ocispec.SandboxID); err != nil {
+		return nil, apierror.Internal("pausing sandbox: %v", err)
+	}
+
+	// 2. Freeze the leaf cgroup containing Sentry and Gofers.
+	if err := cgroupstats.Freeze(ctx, cgroupDir); err != nil {
+		return nil, apierror.Internal("freezing cgroup: %v", err)
+	}
+
+	// 3. Set memory.low reservation if requested.
+	if memLow := req.GetMemoryLowBytes(); memLow > 0 {
+		if err := cgroupstats.SetMemoryLow(cgroupDir, memLow); err != nil {
+			slog.WarnContext(ctx, "Failed to set memory.low on frozen cgroup",
+				slog.String("actor", req.GetActorUid()), slog.Any("error", err))
+		}
+	}
+
+	s.actorLogger.EmitLifecycleLog(ctx, "Actor frozen", hosted.attribution)
+	return &ateworkerpb.FreezeWorkloadResponse{}, nil
+}
+
+// ThawWorkload thaws the sandbox cgroup and resumes guest execution.
+func (s *AteWorkerService) ThawWorkload(ctx context.Context, req *ateworkerpb.ThawWorkloadRequest) (*ateworkerpb.ThawWorkloadResponse, error) {
+	if req.GetActorUid() == "" {
+		return nil, apierror.InvalidArgument("actor_uid is required")
+	}
+	if !s.locks.Lock(ctx, req.GetActorUid()) {
+		return nil, fmt.Errorf("gave up waiting for the actor's lock: %w", ctx.Err())
+	}
+	defer s.locks.Unlock(req.GetActorUid())
+
+	defer s.inFlight.Add(req.GetActorUid(), rpcThawWorkload, nil)()
+
+	hosted := s.lookupActor(req.GetActorUid())
+	if hosted == nil {
+		return nil, apierror.NotFound("worker is not executing actor %q", req.GetActorUid())
+	}
+	if hosted.session == nil || hosted.session.rcmd == nil {
+		return nil, apierror.FailedPrecondition("actor %q has no active session", req.GetActorUid())
+	}
+
+	cgroupDir := filepath.Join(s.cgroupRoot, ocispec.GVisorCgroupLeaf(req.GetActorUid(), sandboxCgroupContainer))
+
+	// 1. Thaw the leaf cgroup containing Sentry and Gofers.
+	if err := cgroupstats.Thaw(ctx, cgroupDir); err != nil {
+		return nil, apierror.Internal("thawing cgroup: %v", err)
+	}
+
+	// 2. Resume the sandbox tasks via runsc resume. This also resumes Timekeeper.
+	if err := hosted.session.rcmd.cmdResume(ctx, ocispec.SandboxID); err != nil {
+		return nil, apierror.Internal("resuming sandbox: %v", err)
+	}
+
+	s.actorLogger.EmitLifecycleLog(ctx, "Actor thawed", hosted.attribution)
+	return &ateworkerpb.ThawWorkloadResponse{}, nil
 }
 
 // listSnapshotFiles returns the (relative) names of regular files directly under

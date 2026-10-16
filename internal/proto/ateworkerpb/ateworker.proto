@@ -103,6 +103,14 @@ service Worker {
   // TerminateWorkload stops and deletes container workloads and cleans up
   // network and bundle overlays on the worker.
   rpc TerminateWorkload(TerminateWorkloadRequest) returns (TerminateWorkloadResponse) {}
+
+  // FreezeWorkload pauses the guest runtime and freezes the sandbox cgroup in-place,
+  // reducing CPU burn to 0.00% and halting the Sentry monotonic clock while keeping
+  // memory resident in RAM for fast sub-millisecond resume.
+  rpc FreezeWorkload(FreezeWorkloadRequest) returns (FreezeWorkloadResponse) {}
+
+  // ThawWorkload thaws the sandbox cgroup and resumes guest execution immediately.
+  rpc ThawWorkload(ThawWorkloadRequest) returns (ThawWorkloadResponse) {}
 }
 
 // ActorDirs is the set of per-actor directories atelet prepares on the volume
@@ -190,6 +198,23 @@ message TerminateWorkloadRequest {
 }
 
 message TerminateWorkloadResponse {
+}
+
+message FreezeWorkloadRequest {
+  string actor_uid = 1;
+  // memory_low_bytes is the optional memory.low reservation to apply while frozen
+  // (e.g. 41943040 for 40MB). 0 leaves memory.low unchanged.
+  uint64 memory_low_bytes = 2;
+}
+
+message FreezeWorkloadResponse {
+}
+
+message ThawWorkloadRequest {
+  string actor_uid = 1;
+}
+
+message ThawWorkloadResponse {
 }
 
 message RunWorkloadRequest {

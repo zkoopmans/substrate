@@ -454,6 +454,176 @@ func (*TerminateWorkloadResponse) Descriptor() ([]byte, []int) {
 	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{2}
 }
 
+type FreezeWorkloadRequest struct {
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	ActorUid string                 `protobuf:"bytes,1,opt,name=actor_uid,json=actorUid,proto3" json:"actor_uid,omitempty"`
+	// memory_low_bytes is the optional memory.low reservation to apply while frozen
+	// (e.g. 41943040 for 40MB). 0 leaves memory.low unchanged.
+	MemoryLowBytes uint64 `protobuf:"varint,2,opt,name=memory_low_bytes,json=memoryLowBytes,proto3" json:"memory_low_bytes,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *FreezeWorkloadRequest) Reset() {
+	*x = FreezeWorkloadRequest{}
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FreezeWorkloadRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FreezeWorkloadRequest) ProtoMessage() {}
+
+func (x *FreezeWorkloadRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FreezeWorkloadRequest.ProtoReflect.Descriptor instead.
+func (*FreezeWorkloadRequest) Descriptor() ([]byte, []int) {
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *FreezeWorkloadRequest) GetActorUid() string {
+	if x != nil {
+		return x.ActorUid
+	}
+	return ""
+}
+
+func (x *FreezeWorkloadRequest) GetMemoryLowBytes() uint64 {
+	if x != nil {
+		return x.MemoryLowBytes
+	}
+	return 0
+}
+
+type FreezeWorkloadResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FreezeWorkloadResponse) Reset() {
+	*x = FreezeWorkloadResponse{}
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FreezeWorkloadResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FreezeWorkloadResponse) ProtoMessage() {}
+
+func (x *FreezeWorkloadResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FreezeWorkloadResponse.ProtoReflect.Descriptor instead.
+func (*FreezeWorkloadResponse) Descriptor() ([]byte, []int) {
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{4}
+}
+
+type ThawWorkloadRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ActorUid      string                 `protobuf:"bytes,1,opt,name=actor_uid,json=actorUid,proto3" json:"actor_uid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ThawWorkloadRequest) Reset() {
+	*x = ThawWorkloadRequest{}
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ThawWorkloadRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ThawWorkloadRequest) ProtoMessage() {}
+
+func (x *ThawWorkloadRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ThawWorkloadRequest.ProtoReflect.Descriptor instead.
+func (*ThawWorkloadRequest) Descriptor() ([]byte, []int) {
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ThawWorkloadRequest) GetActorUid() string {
+	if x != nil {
+		return x.ActorUid
+	}
+	return ""
+}
+
+type ThawWorkloadResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ThawWorkloadResponse) Reset() {
+	*x = ThawWorkloadResponse{}
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ThawWorkloadResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ThawWorkloadResponse) ProtoMessage() {}
+
+func (x *ThawWorkloadResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ThawWorkloadResponse.ProtoReflect.Descriptor instead.
+func (*ThawWorkloadResponse) Descriptor() ([]byte, []int) {
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{6}
+}
+
 type RunWorkloadRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// +k8s:required
@@ -509,7 +679,7 @@ type RunWorkloadRequest struct {
 
 func (x *RunWorkloadRequest) Reset() {
 	*x = RunWorkloadRequest{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[3]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -521,7 +691,7 @@ func (x *RunWorkloadRequest) String() string {
 func (*RunWorkloadRequest) ProtoMessage() {}
 
 func (x *RunWorkloadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[3]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -534,7 +704,7 @@ func (x *RunWorkloadRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RunWorkloadRequest.ProtoReflect.Descriptor instead.
 func (*RunWorkloadRequest) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{3}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *RunWorkloadRequest) GetAtespace() string {
@@ -630,7 +800,7 @@ type EgressGateway struct {
 
 func (x *EgressGateway) Reset() {
 	*x = EgressGateway{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[4]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -642,7 +812,7 @@ func (x *EgressGateway) String() string {
 func (*EgressGateway) ProtoMessage() {}
 
 func (x *EgressGateway) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[4]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -655,7 +825,7 @@ func (x *EgressGateway) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EgressGateway.ProtoReflect.Descriptor instead.
 func (*EgressGateway) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{4}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *EgressGateway) GetAddress() string {
@@ -682,7 +852,7 @@ type WorkloadSpec struct {
 
 func (x *WorkloadSpec) Reset() {
 	*x = WorkloadSpec{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[5]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -694,7 +864,7 @@ func (x *WorkloadSpec) String() string {
 func (*WorkloadSpec) ProtoMessage() {}
 
 func (x *WorkloadSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[5]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -707,7 +877,7 @@ func (x *WorkloadSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WorkloadSpec.ProtoReflect.Descriptor instead.
 func (*WorkloadSpec) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{5}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *WorkloadSpec) GetContainers() []*Container {
@@ -779,7 +949,7 @@ type Container struct {
 
 func (x *Container) Reset() {
 	*x = Container{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[6]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -791,7 +961,7 @@ func (x *Container) String() string {
 func (*Container) ProtoMessage() {}
 
 func (x *Container) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[6]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -804,7 +974,7 @@ func (x *Container) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Container.ProtoReflect.Descriptor instead.
 func (*Container) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{6}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *Container) GetName() string {
@@ -877,7 +1047,7 @@ type ContainerSpec struct {
 
 func (x *ContainerSpec) Reset() {
 	*x = ContainerSpec{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[7]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -889,7 +1059,7 @@ func (x *ContainerSpec) String() string {
 func (*ContainerSpec) ProtoMessage() {}
 
 func (x *ContainerSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[7]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -902,7 +1072,7 @@ func (x *ContainerSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ContainerSpec.ProtoReflect.Descriptor instead.
 func (*ContainerSpec) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{7}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ContainerSpec) GetArgs() []string {
@@ -946,7 +1116,7 @@ type ResourceRequirements struct {
 
 func (x *ResourceRequirements) Reset() {
 	*x = ResourceRequirements{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[8]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -958,7 +1128,7 @@ func (x *ResourceRequirements) String() string {
 func (*ResourceRequirements) ProtoMessage() {}
 
 func (x *ResourceRequirements) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[8]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -971,7 +1141,7 @@ func (x *ResourceRequirements) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResourceRequirements.ProtoReflect.Descriptor instead.
 func (*ResourceRequirements) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{8}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ResourceRequirements) GetLimits() *Resources {
@@ -1001,7 +1171,7 @@ type Resources struct {
 
 func (x *Resources) Reset() {
 	*x = Resources{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[9]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1013,7 +1183,7 @@ func (x *Resources) String() string {
 func (*Resources) ProtoMessage() {}
 
 func (x *Resources) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[9]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1026,7 +1196,7 @@ func (x *Resources) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Resources.ProtoReflect.Descriptor instead.
 func (*Resources) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{9}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *Resources) GetCpuMillicores() int64 {
@@ -1065,7 +1235,7 @@ type VolumeMount struct {
 
 func (x *VolumeMount) Reset() {
 	*x = VolumeMount{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[10]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1077,7 +1247,7 @@ func (x *VolumeMount) String() string {
 func (*VolumeMount) ProtoMessage() {}
 
 func (x *VolumeMount) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[10]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1090,7 +1260,7 @@ func (x *VolumeMount) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VolumeMount.ProtoReflect.Descriptor instead.
 func (*VolumeMount) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{10}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *VolumeMount) GetName() string {
@@ -1125,7 +1295,7 @@ type WakeupProbe struct {
 
 func (x *WakeupProbe) Reset() {
 	*x = WakeupProbe{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[11]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1137,7 +1307,7 @@ func (x *WakeupProbe) String() string {
 func (*WakeupProbe) ProtoMessage() {}
 
 func (x *WakeupProbe) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[11]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1150,7 +1320,7 @@ func (x *WakeupProbe) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WakeupProbe.ProtoReflect.Descriptor instead.
 func (*WakeupProbe) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{11}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *WakeupProbe) GetHttpGet() *HttpGetAction {
@@ -1188,7 +1358,7 @@ type HttpGetAction struct {
 
 func (x *HttpGetAction) Reset() {
 	*x = HttpGetAction{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[12]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1200,7 +1370,7 @@ func (x *HttpGetAction) String() string {
 func (*HttpGetAction) ProtoMessage() {}
 
 func (x *HttpGetAction) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[12]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1213,7 +1383,7 @@ func (x *HttpGetAction) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HttpGetAction.ProtoReflect.Descriptor instead.
 func (*HttpGetAction) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{12}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *HttpGetAction) GetPath() string {
@@ -1240,7 +1410,7 @@ type RunWorkloadResponse struct {
 
 func (x *RunWorkloadResponse) Reset() {
 	*x = RunWorkloadResponse{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[13]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1252,7 +1422,7 @@ func (x *RunWorkloadResponse) String() string {
 func (*RunWorkloadResponse) ProtoMessage() {}
 
 func (x *RunWorkloadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[13]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1265,7 +1435,7 @@ func (x *RunWorkloadResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RunWorkloadResponse.ProtoReflect.Descriptor instead.
 func (*RunWorkloadResponse) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{13}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *RunWorkloadResponse) GetWorkerEpoch() int64 {
@@ -1313,7 +1483,7 @@ type CheckpointWorkloadRequest struct {
 
 func (x *CheckpointWorkloadRequest) Reset() {
 	*x = CheckpointWorkloadRequest{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[14]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1325,7 +1495,7 @@ func (x *CheckpointWorkloadRequest) String() string {
 func (*CheckpointWorkloadRequest) ProtoMessage() {}
 
 func (x *CheckpointWorkloadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[14]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1338,7 +1508,7 @@ func (x *CheckpointWorkloadRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckpointWorkloadRequest.ProtoReflect.Descriptor instead.
 func (*CheckpointWorkloadRequest) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{14}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *CheckpointWorkloadRequest) GetAtespace() string {
@@ -1419,7 +1589,7 @@ type CheckpointWorkloadResponse struct {
 
 func (x *CheckpointWorkloadResponse) Reset() {
 	*x = CheckpointWorkloadResponse{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[15]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1431,7 +1601,7 @@ func (x *CheckpointWorkloadResponse) String() string {
 func (*CheckpointWorkloadResponse) ProtoMessage() {}
 
 func (x *CheckpointWorkloadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[15]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1444,7 +1614,7 @@ func (x *CheckpointWorkloadResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckpointWorkloadResponse.ProtoReflect.Descriptor instead.
 func (*CheckpointWorkloadResponse) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{15}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *CheckpointWorkloadResponse) GetSnapshotFiles() []string {
@@ -1524,7 +1694,7 @@ type RestoreWorkloadRequest struct {
 
 func (x *RestoreWorkloadRequest) Reset() {
 	*x = RestoreWorkloadRequest{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[16]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1536,7 +1706,7 @@ func (x *RestoreWorkloadRequest) String() string {
 func (*RestoreWorkloadRequest) ProtoMessage() {}
 
 func (x *RestoreWorkloadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[16]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1549,7 +1719,7 @@ func (x *RestoreWorkloadRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RestoreWorkloadRequest.ProtoReflect.Descriptor instead.
 func (*RestoreWorkloadRequest) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{16}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *RestoreWorkloadRequest) GetAtespace() string {
@@ -1653,7 +1823,7 @@ type RestoreWorkloadResponse struct {
 
 func (x *RestoreWorkloadResponse) Reset() {
 	*x = RestoreWorkloadResponse{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[17]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1665,7 +1835,7 @@ func (x *RestoreWorkloadResponse) String() string {
 func (*RestoreWorkloadResponse) ProtoMessage() {}
 
 func (x *RestoreWorkloadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[17]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1678,7 +1848,7 @@ func (x *RestoreWorkloadResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RestoreWorkloadResponse.ProtoReflect.Descriptor instead.
 func (*RestoreWorkloadResponse) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{17}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *RestoreWorkloadResponse) GetWorkerEpoch() int64 {
@@ -1704,7 +1874,7 @@ type GetWorkloadStatsRequest struct {
 
 func (x *GetWorkloadStatsRequest) Reset() {
 	*x = GetWorkloadStatsRequest{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[18]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1716,7 +1886,7 @@ func (x *GetWorkloadStatsRequest) String() string {
 func (*GetWorkloadStatsRequest) ProtoMessage() {}
 
 func (x *GetWorkloadStatsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[18]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1729,7 +1899,7 @@ func (x *GetWorkloadStatsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWorkloadStatsRequest.ProtoReflect.Descriptor instead.
 func (*GetWorkloadStatsRequest) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{18}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *GetWorkloadStatsRequest) GetActorUid() string {
@@ -1794,7 +1964,7 @@ type WorkloadStatsSample struct {
 
 func (x *WorkloadStatsSample) Reset() {
 	*x = WorkloadStatsSample{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[19]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1806,7 +1976,7 @@ func (x *WorkloadStatsSample) String() string {
 func (*WorkloadStatsSample) ProtoMessage() {}
 
 func (x *WorkloadStatsSample) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[19]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1819,7 +1989,7 @@ func (x *WorkloadStatsSample) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WorkloadStatsSample.ProtoReflect.Descriptor instead.
 func (*WorkloadStatsSample) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{19}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *WorkloadStatsSample) GetAtespace() string {
@@ -1922,7 +2092,7 @@ type GetWorkloadStatsResponse struct {
 
 func (x *GetWorkloadStatsResponse) Reset() {
 	*x = GetWorkloadStatsResponse{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[20]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1934,7 +2104,7 @@ func (x *GetWorkloadStatsResponse) String() string {
 func (*GetWorkloadStatsResponse) ProtoMessage() {}
 
 func (x *GetWorkloadStatsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[20]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1947,7 +2117,7 @@ func (x *GetWorkloadStatsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWorkloadStatsResponse.ProtoReflect.Descriptor instead.
 func (*GetWorkloadStatsResponse) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{20}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *GetWorkloadStatsResponse) GetSample() *WorkloadStatsSample {
@@ -1965,7 +2135,7 @@ type GetActiveWorkloadStatsRequest struct {
 
 func (x *GetActiveWorkloadStatsRequest) Reset() {
 	*x = GetActiveWorkloadStatsRequest{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[21]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1977,7 +2147,7 @@ func (x *GetActiveWorkloadStatsRequest) String() string {
 func (*GetActiveWorkloadStatsRequest) ProtoMessage() {}
 
 func (x *GetActiveWorkloadStatsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[21]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1990,7 +2160,7 @@ func (x *GetActiveWorkloadStatsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetActiveWorkloadStatsRequest.ProtoReflect.Descriptor instead.
 func (*GetActiveWorkloadStatsRequest) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{21}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{25}
 }
 
 type GetActiveWorkloadStatsResponse struct {
@@ -2010,7 +2180,7 @@ type GetActiveWorkloadStatsResponse struct {
 
 func (x *GetActiveWorkloadStatsResponse) Reset() {
 	*x = GetActiveWorkloadStatsResponse{}
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[22]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2022,7 +2192,7 @@ func (x *GetActiveWorkloadStatsResponse) String() string {
 func (*GetActiveWorkloadStatsResponse) ProtoMessage() {}
 
 func (x *GetActiveWorkloadStatsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[22]
+	mi := &file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2035,7 +2205,7 @@ func (x *GetActiveWorkloadStatsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetActiveWorkloadStatsResponse.ProtoReflect.Descriptor instead.
 func (*GetActiveWorkloadStatsResponse) Descriptor() ([]byte, []int) {
-	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{22}
+	return file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *GetActiveWorkloadStatsResponse) GetSamples() []*WorkloadStatsSample {
@@ -2072,7 +2242,14 @@ const file_internal_proto_ateworkerpb_ateworker_proto_rawDesc = "" +
 	"\x04spec\x18\a \x01(\v2\x17.ateworker.WorkloadSpecR\x04spec\x123\n" +
 	"\n" +
 	"actor_dirs\x18\b \x01(\v2\x14.ateworker.ActorDirsR\tactorDirs\"\x1b\n" +
-	"\x19TerminateWorkloadResponse\"\x99\x05\n" +
+	"\x19TerminateWorkloadResponse\"^\n" +
+	"\x15FreezeWorkloadRequest\x12\x1b\n" +
+	"\tactor_uid\x18\x01 \x01(\tR\bactorUid\x12(\n" +
+	"\x10memory_low_bytes\x18\x02 \x01(\x04R\x0ememoryLowBytes\"\x18\n" +
+	"\x16FreezeWorkloadResponse\"2\n" +
+	"\x13ThawWorkloadRequest\x12\x1b\n" +
+	"\tactor_uid\x18\x01 \x01(\tR\bactorUid\"\x16\n" +
+	"\x14ThawWorkloadResponse\"\x99\x05\n" +
 	"\x12RunWorkloadRequest\x12\x1a\n" +
 	"\batespace\x18\x01 \x01(\tR\batespace\x12\x1d\n" +
 	"\n" +
@@ -2200,14 +2377,16 @@ const file_internal_proto_ateworkerpb_ateworker_proto_rawDesc = "" +
 	"\vStatsSource\x12\x1c\n" +
 	"\x18STATS_SOURCE_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13STATS_SOURCE_CGROUP\x10\x01\x12\x1c\n" +
-	"\x18STATS_SOURCE_GUEST_AGENT\x10\x022\xcb\x04\n" +
+	"\x18STATS_SOURCE_GUEST_AGENT\x10\x022\xf7\x05\n" +
 	"\x06Worker\x12N\n" +
 	"\vRunWorkload\x12\x1d.ateworker.RunWorkloadRequest\x1a\x1e.ateworker.RunWorkloadResponse\"\x00\x12c\n" +
 	"\x12CheckpointWorkload\x12$.ateworker.CheckpointWorkloadRequest\x1a%.ateworker.CheckpointWorkloadResponse\"\x00\x12Z\n" +
 	"\x0fRestoreWorkload\x12!.ateworker.RestoreWorkloadRequest\x1a\".ateworker.RestoreWorkloadResponse\"\x00\x12]\n" +
 	"\x10GetWorkloadStats\x12\".ateworker.GetWorkloadStatsRequest\x1a#.ateworker.GetWorkloadStatsResponse\"\x00\x12o\n" +
 	"\x16GetActiveWorkloadStats\x12(.ateworker.GetActiveWorkloadStatsRequest\x1a).ateworker.GetActiveWorkloadStatsResponse\"\x00\x12`\n" +
-	"\x11TerminateWorkload\x12#.ateworker.TerminateWorkloadRequest\x1a$.ateworker.TerminateWorkloadResponse\"\x00B1Z/go.ate.dev/substrate/internal/proto/ateworkerpbb\x06proto3"
+	"\x11TerminateWorkload\x12#.ateworker.TerminateWorkloadRequest\x1a$.ateworker.TerminateWorkloadResponse\"\x00\x12W\n" +
+	"\x0eFreezeWorkload\x12 .ateworker.FreezeWorkloadRequest\x1a!.ateworker.FreezeWorkloadResponse\"\x00\x12Q\n" +
+	"\fThawWorkload\x12\x1e.ateworker.ThawWorkloadRequest\x1a\x1f.ateworker.ThawWorkloadResponse\"\x00B1Z/go.ate.dev/substrate/internal/proto/ateworkerpbb\x06proto3"
 
 var (
 	file_internal_proto_ateworkerpb_ateworker_proto_rawDescOnce sync.Once
@@ -2222,80 +2401,88 @@ func file_internal_proto_ateworkerpb_ateworker_proto_rawDescGZIP() []byte {
 }
 
 var file_internal_proto_ateworkerpb_ateworker_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_internal_proto_ateworkerpb_ateworker_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
+var file_internal_proto_ateworkerpb_ateworker_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
 var file_internal_proto_ateworkerpb_ateworker_proto_goTypes = []any{
 	(SnapshotFidelity)(0),                  // 0: ateworker.SnapshotFidelity
 	(StatsSource)(0),                       // 1: ateworker.StatsSource
 	(*ActorDirs)(nil),                      // 2: ateworker.ActorDirs
 	(*TerminateWorkloadRequest)(nil),       // 3: ateworker.TerminateWorkloadRequest
 	(*TerminateWorkloadResponse)(nil),      // 4: ateworker.TerminateWorkloadResponse
-	(*RunWorkloadRequest)(nil),             // 5: ateworker.RunWorkloadRequest
-	(*EgressGateway)(nil),                  // 6: ateworker.EgressGateway
-	(*WorkloadSpec)(nil),                   // 7: ateworker.WorkloadSpec
-	(*Container)(nil),                      // 8: ateworker.Container
-	(*ContainerSpec)(nil),                  // 9: ateworker.ContainerSpec
-	(*ResourceRequirements)(nil),           // 10: ateworker.ResourceRequirements
-	(*Resources)(nil),                      // 11: ateworker.Resources
-	(*VolumeMount)(nil),                    // 12: ateworker.VolumeMount
-	(*WakeupProbe)(nil),                    // 13: ateworker.WakeupProbe
-	(*HttpGetAction)(nil),                  // 14: ateworker.HttpGetAction
-	(*RunWorkloadResponse)(nil),            // 15: ateworker.RunWorkloadResponse
-	(*CheckpointWorkloadRequest)(nil),      // 16: ateworker.CheckpointWorkloadRequest
-	(*CheckpointWorkloadResponse)(nil),     // 17: ateworker.CheckpointWorkloadResponse
-	(*RestoreWorkloadRequest)(nil),         // 18: ateworker.RestoreWorkloadRequest
-	(*RestoreWorkloadResponse)(nil),        // 19: ateworker.RestoreWorkloadResponse
-	(*GetWorkloadStatsRequest)(nil),        // 20: ateworker.GetWorkloadStatsRequest
-	(*WorkloadStatsSample)(nil),            // 21: ateworker.WorkloadStatsSample
-	(*GetWorkloadStatsResponse)(nil),       // 22: ateworker.GetWorkloadStatsResponse
-	(*GetActiveWorkloadStatsRequest)(nil),  // 23: ateworker.GetActiveWorkloadStatsRequest
-	(*GetActiveWorkloadStatsResponse)(nil), // 24: ateworker.GetActiveWorkloadStatsResponse
-	nil,                                    // 25: ateworker.RunWorkloadRequest.RuntimeAssetPathsEntry
-	nil,                                    // 26: ateworker.RestoreWorkloadRequest.RuntimeAssetPathsEntry
+	(*FreezeWorkloadRequest)(nil),          // 5: ateworker.FreezeWorkloadRequest
+	(*FreezeWorkloadResponse)(nil),         // 6: ateworker.FreezeWorkloadResponse
+	(*ThawWorkloadRequest)(nil),            // 7: ateworker.ThawWorkloadRequest
+	(*ThawWorkloadResponse)(nil),           // 8: ateworker.ThawWorkloadResponse
+	(*RunWorkloadRequest)(nil),             // 9: ateworker.RunWorkloadRequest
+	(*EgressGateway)(nil),                  // 10: ateworker.EgressGateway
+	(*WorkloadSpec)(nil),                   // 11: ateworker.WorkloadSpec
+	(*Container)(nil),                      // 12: ateworker.Container
+	(*ContainerSpec)(nil),                  // 13: ateworker.ContainerSpec
+	(*ResourceRequirements)(nil),           // 14: ateworker.ResourceRequirements
+	(*Resources)(nil),                      // 15: ateworker.Resources
+	(*VolumeMount)(nil),                    // 16: ateworker.VolumeMount
+	(*WakeupProbe)(nil),                    // 17: ateworker.WakeupProbe
+	(*HttpGetAction)(nil),                  // 18: ateworker.HttpGetAction
+	(*RunWorkloadResponse)(nil),            // 19: ateworker.RunWorkloadResponse
+	(*CheckpointWorkloadRequest)(nil),      // 20: ateworker.CheckpointWorkloadRequest
+	(*CheckpointWorkloadResponse)(nil),     // 21: ateworker.CheckpointWorkloadResponse
+	(*RestoreWorkloadRequest)(nil),         // 22: ateworker.RestoreWorkloadRequest
+	(*RestoreWorkloadResponse)(nil),        // 23: ateworker.RestoreWorkloadResponse
+	(*GetWorkloadStatsRequest)(nil),        // 24: ateworker.GetWorkloadStatsRequest
+	(*WorkloadStatsSample)(nil),            // 25: ateworker.WorkloadStatsSample
+	(*GetWorkloadStatsResponse)(nil),       // 26: ateworker.GetWorkloadStatsResponse
+	(*GetActiveWorkloadStatsRequest)(nil),  // 27: ateworker.GetActiveWorkloadStatsRequest
+	(*GetActiveWorkloadStatsResponse)(nil), // 28: ateworker.GetActiveWorkloadStatsResponse
+	nil,                                    // 29: ateworker.RunWorkloadRequest.RuntimeAssetPathsEntry
+	nil,                                    // 30: ateworker.RestoreWorkloadRequest.RuntimeAssetPathsEntry
 }
 var file_internal_proto_ateworkerpb_ateworker_proto_depIdxs = []int32{
-	7,  // 0: ateworker.TerminateWorkloadRequest.spec:type_name -> ateworker.WorkloadSpec
+	11, // 0: ateworker.TerminateWorkloadRequest.spec:type_name -> ateworker.WorkloadSpec
 	2,  // 1: ateworker.TerminateWorkloadRequest.actor_dirs:type_name -> ateworker.ActorDirs
-	7,  // 2: ateworker.RunWorkloadRequest.spec:type_name -> ateworker.WorkloadSpec
-	25, // 3: ateworker.RunWorkloadRequest.runtime_asset_paths:type_name -> ateworker.RunWorkloadRequest.RuntimeAssetPathsEntry
-	6,  // 4: ateworker.RunWorkloadRequest.egress_gateway:type_name -> ateworker.EgressGateway
-	10, // 5: ateworker.RunWorkloadRequest.resources:type_name -> ateworker.ResourceRequirements
+	11, // 2: ateworker.RunWorkloadRequest.spec:type_name -> ateworker.WorkloadSpec
+	29, // 3: ateworker.RunWorkloadRequest.runtime_asset_paths:type_name -> ateworker.RunWorkloadRequest.RuntimeAssetPathsEntry
+	10, // 4: ateworker.RunWorkloadRequest.egress_gateway:type_name -> ateworker.EgressGateway
+	14, // 5: ateworker.RunWorkloadRequest.resources:type_name -> ateworker.ResourceRequirements
 	2,  // 6: ateworker.RunWorkloadRequest.actor_dirs:type_name -> ateworker.ActorDirs
-	8,  // 7: ateworker.WorkloadSpec.containers:type_name -> ateworker.Container
-	13, // 8: ateworker.Container.wakeup_probe:type_name -> ateworker.WakeupProbe
-	12, // 9: ateworker.Container.durable_dir_volume_mounts:type_name -> ateworker.VolumeMount
-	12, // 10: ateworker.Container.external_volume_mounts:type_name -> ateworker.VolumeMount
-	12, // 11: ateworker.Container.system_info_volume_mounts:type_name -> ateworker.VolumeMount
-	12, // 12: ateworker.Container.image_volume_mounts:type_name -> ateworker.VolumeMount
-	9,  // 13: ateworker.Container.container_spec:type_name -> ateworker.ContainerSpec
-	10, // 14: ateworker.ContainerSpec.resources:type_name -> ateworker.ResourceRequirements
-	11, // 15: ateworker.ResourceRequirements.limits:type_name -> ateworker.Resources
-	14, // 16: ateworker.WakeupProbe.http_get:type_name -> ateworker.HttpGetAction
-	7,  // 17: ateworker.CheckpointWorkloadRequest.spec:type_name -> ateworker.WorkloadSpec
+	12, // 7: ateworker.WorkloadSpec.containers:type_name -> ateworker.Container
+	17, // 8: ateworker.Container.wakeup_probe:type_name -> ateworker.WakeupProbe
+	16, // 9: ateworker.Container.durable_dir_volume_mounts:type_name -> ateworker.VolumeMount
+	16, // 10: ateworker.Container.external_volume_mounts:type_name -> ateworker.VolumeMount
+	16, // 11: ateworker.Container.system_info_volume_mounts:type_name -> ateworker.VolumeMount
+	16, // 12: ateworker.Container.image_volume_mounts:type_name -> ateworker.VolumeMount
+	13, // 13: ateworker.Container.container_spec:type_name -> ateworker.ContainerSpec
+	14, // 14: ateworker.ContainerSpec.resources:type_name -> ateworker.ResourceRequirements
+	15, // 15: ateworker.ResourceRequirements.limits:type_name -> ateworker.Resources
+	18, // 16: ateworker.WakeupProbe.http_get:type_name -> ateworker.HttpGetAction
+	11, // 17: ateworker.CheckpointWorkloadRequest.spec:type_name -> ateworker.WorkloadSpec
 	0,  // 18: ateworker.CheckpointWorkloadRequest.fidelity:type_name -> ateworker.SnapshotFidelity
 	2,  // 19: ateworker.CheckpointWorkloadRequest.actor_dirs:type_name -> ateworker.ActorDirs
-	7,  // 20: ateworker.RestoreWorkloadRequest.spec:type_name -> ateworker.WorkloadSpec
-	26, // 21: ateworker.RestoreWorkloadRequest.runtime_asset_paths:type_name -> ateworker.RestoreWorkloadRequest.RuntimeAssetPathsEntry
+	11, // 20: ateworker.RestoreWorkloadRequest.spec:type_name -> ateworker.WorkloadSpec
+	30, // 21: ateworker.RestoreWorkloadRequest.runtime_asset_paths:type_name -> ateworker.RestoreWorkloadRequest.RuntimeAssetPathsEntry
 	0,  // 22: ateworker.RestoreWorkloadRequest.fidelity:type_name -> ateworker.SnapshotFidelity
-	6,  // 23: ateworker.RestoreWorkloadRequest.egress_gateway:type_name -> ateworker.EgressGateway
-	10, // 24: ateworker.RestoreWorkloadRequest.resources:type_name -> ateworker.ResourceRequirements
+	10, // 23: ateworker.RestoreWorkloadRequest.egress_gateway:type_name -> ateworker.EgressGateway
+	14, // 24: ateworker.RestoreWorkloadRequest.resources:type_name -> ateworker.ResourceRequirements
 	2,  // 25: ateworker.RestoreWorkloadRequest.actor_dirs:type_name -> ateworker.ActorDirs
 	1,  // 26: ateworker.WorkloadStatsSample.source:type_name -> ateworker.StatsSource
-	21, // 27: ateworker.GetWorkloadStatsResponse.sample:type_name -> ateworker.WorkloadStatsSample
-	21, // 28: ateworker.GetActiveWorkloadStatsResponse.samples:type_name -> ateworker.WorkloadStatsSample
-	5,  // 29: ateworker.Worker.RunWorkload:input_type -> ateworker.RunWorkloadRequest
-	16, // 30: ateworker.Worker.CheckpointWorkload:input_type -> ateworker.CheckpointWorkloadRequest
-	18, // 31: ateworker.Worker.RestoreWorkload:input_type -> ateworker.RestoreWorkloadRequest
-	20, // 32: ateworker.Worker.GetWorkloadStats:input_type -> ateworker.GetWorkloadStatsRequest
-	23, // 33: ateworker.Worker.GetActiveWorkloadStats:input_type -> ateworker.GetActiveWorkloadStatsRequest
+	25, // 27: ateworker.GetWorkloadStatsResponse.sample:type_name -> ateworker.WorkloadStatsSample
+	25, // 28: ateworker.GetActiveWorkloadStatsResponse.samples:type_name -> ateworker.WorkloadStatsSample
+	9,  // 29: ateworker.Worker.RunWorkload:input_type -> ateworker.RunWorkloadRequest
+	20, // 30: ateworker.Worker.CheckpointWorkload:input_type -> ateworker.CheckpointWorkloadRequest
+	22, // 31: ateworker.Worker.RestoreWorkload:input_type -> ateworker.RestoreWorkloadRequest
+	24, // 32: ateworker.Worker.GetWorkloadStats:input_type -> ateworker.GetWorkloadStatsRequest
+	27, // 33: ateworker.Worker.GetActiveWorkloadStats:input_type -> ateworker.GetActiveWorkloadStatsRequest
 	3,  // 34: ateworker.Worker.TerminateWorkload:input_type -> ateworker.TerminateWorkloadRequest
-	15, // 35: ateworker.Worker.RunWorkload:output_type -> ateworker.RunWorkloadResponse
-	17, // 36: ateworker.Worker.CheckpointWorkload:output_type -> ateworker.CheckpointWorkloadResponse
-	19, // 37: ateworker.Worker.RestoreWorkload:output_type -> ateworker.RestoreWorkloadResponse
-	22, // 38: ateworker.Worker.GetWorkloadStats:output_type -> ateworker.GetWorkloadStatsResponse
-	24, // 39: ateworker.Worker.GetActiveWorkloadStats:output_type -> ateworker.GetActiveWorkloadStatsResponse
-	4,  // 40: ateworker.Worker.TerminateWorkload:output_type -> ateworker.TerminateWorkloadResponse
-	35, // [35:41] is the sub-list for method output_type
-	29, // [29:35] is the sub-list for method input_type
+	5,  // 35: ateworker.Worker.FreezeWorkload:input_type -> ateworker.FreezeWorkloadRequest
+	7,  // 36: ateworker.Worker.ThawWorkload:input_type -> ateworker.ThawWorkloadRequest
+	19, // 37: ateworker.Worker.RunWorkload:output_type -> ateworker.RunWorkloadResponse
+	21, // 38: ateworker.Worker.CheckpointWorkload:output_type -> ateworker.CheckpointWorkloadResponse
+	23, // 39: ateworker.Worker.RestoreWorkload:output_type -> ateworker.RestoreWorkloadResponse
+	26, // 40: ateworker.Worker.GetWorkloadStats:output_type -> ateworker.GetWorkloadStatsResponse
+	28, // 41: ateworker.Worker.GetActiveWorkloadStats:output_type -> ateworker.GetActiveWorkloadStatsResponse
+	4,  // 42: ateworker.Worker.TerminateWorkload:output_type -> ateworker.TerminateWorkloadResponse
+	6,  // 43: ateworker.Worker.FreezeWorkload:output_type -> ateworker.FreezeWorkloadResponse
+	8,  // 44: ateworker.Worker.ThawWorkload:output_type -> ateworker.ThawWorkloadResponse
+	37, // [37:45] is the sub-list for method output_type
+	29, // [29:37] is the sub-list for method input_type
 	29, // [29:29] is the sub-list for extension type_name
 	29, // [29:29] is the sub-list for extension extendee
 	0,  // [0:29] is the sub-list for field type_name
@@ -2306,15 +2493,15 @@ func file_internal_proto_ateworkerpb_ateworker_proto_init() {
 	if File_internal_proto_ateworkerpb_ateworker_proto != nil {
 		return
 	}
-	file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[3].OneofWrappers = []any{}
-	file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[16].OneofWrappers = []any{}
+	file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[7].OneofWrappers = []any{}
+	file_internal_proto_ateworkerpb_ateworker_proto_msgTypes[20].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_internal_proto_ateworkerpb_ateworker_proto_rawDesc), len(file_internal_proto_ateworkerpb_ateworker_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   25,
+			NumMessages:   29,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
