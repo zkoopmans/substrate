@@ -19,13 +19,17 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log/slog"
+	"net"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"slices"
 	"strings"
+	"time"
 
 	"github.com/opencontainers/runtime-spec/specs-go"
 	"go.ate.dev/substrate/internal/ocispec"
@@ -264,8 +268,86 @@ func (r *runsc) pauseArgs(containerName string) []string {
 	return r.buildArgs("pause", containerName)
 }
 
+// controlSocketPath returns the path to the Sentry control socket in runsc-state.
+func (r *runsc) controlSocketPath(containerName string) string {
+	if r.actorDirs == nil {
+		return ""
+	}
+	stateDir := runscStateDir(r.actorDirs)
+	// gVisor names the control socket runsc-<id>.sock in the root directory.
+	// For sandbox containers, the ID is either containerName (e.g. "_pause") or actorUID.
+	candidates := []string{
+		filepath.Join(stateDir, fmt.Sprintf("runsc-%s.sock", containerName)),
+		filepath.Join(stateDir, fmt.Sprintf("runsc-%s.sock", r.actorUID)),
+	}
+	for _, cand := range candidates {
+		if _, err := os.Stat(cand); err == nil {
+			return cand
+		}
+	}
+	return candidates[0]
+}
+
+type urpcCall struct {
+	Method string `json:"method"`
+	Arg    any    `json:"arg"`
+}
+
+type urpcResult struct {
+	Success bool   `json:"success"`
+	Err     string `json:"err"`
+	Result  any    `json:"result"`
+}
+
+// callSandboxControl attempts to issue an RPC over the sandbox's Unix domain control
+// socket, bypassing the ~11ms runsc CLI fork/exec overhead.
+func (r *runsc) callSandboxControl(ctx context.Context, containerName, method string) error {
+	sockPath := r.controlSocketPath(containerName)
+	if sockPath == "" {
+		return fmt.Errorf("no actor dirs configured")
+	}
+
+	var d net.Dialer
+	conn, err := d.DialContext(ctx, "unix", sockPath)
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+
+	if deadline, ok := ctx.Deadline(); ok {
+		_ = conn.SetDeadline(deadline)
+	} else {
+		_ = conn.SetDeadline(time.Now().Add(5 * time.Second))
+	}
+
+	reqBytes, err := json.Marshal(urpcCall{Method: method, Arg: nil})
+	if err != nil {
+		return fmt.Errorf("marshalling urpc call: %w", err)
+	}
+	if _, err := conn.Write(reqBytes); err != nil {
+		return fmt.Errorf("writing to control socket: %w", err)
+	}
+
+	var res urpcResult
+	if err := json.NewDecoder(conn).Decode(&res); err != nil {
+		return fmt.Errorf("decoding urpc response: %w", err)
+	}
+	if !res.Success {
+		return fmt.Errorf("urpc method %s returned error: %s", method, res.Err)
+	}
+	return nil
+}
+
 func (r *runsc) cmdPause(ctx context.Context, containerName string) error {
 	slog.InfoContext(ctx, "About to run runsc pause", slog.String("container", containerName))
+	if err := r.callSandboxControl(ctx, containerName, "containerManager.Pause"); err == nil {
+		slog.DebugContext(ctx, "Paused sandbox via direct control socket", slog.String("container", containerName))
+		return nil
+	} else {
+		slog.DebugContext(ctx, "Direct control socket pause failed, falling back to CLI",
+			slog.String("container", containerName), slog.Any("error", err))
+	}
+
 	cmd := exec.CommandContext(ctx, r.path, r.pauseArgs(containerName)...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -283,6 +365,14 @@ func (r *runsc) resumeArgs(containerName string) []string {
 
 func (r *runsc) cmdResume(ctx context.Context, containerName string) error {
 	slog.InfoContext(ctx, "About to run runsc resume", slog.String("container", containerName))
+	if err := r.callSandboxControl(ctx, containerName, "containerManager.Resume"); err == nil {
+		slog.DebugContext(ctx, "Resumed sandbox via direct control socket", slog.String("container", containerName))
+		return nil
+	} else {
+		slog.DebugContext(ctx, "Direct control socket resume failed, falling back to CLI",
+			slog.String("container", containerName), slog.Any("error", err))
+	}
+
 	cmd := exec.CommandContext(ctx, r.path, r.resumeArgs(containerName)...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

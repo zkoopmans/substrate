@@ -19,6 +19,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"net"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -364,13 +365,13 @@ func TestPauseArgs(t *testing.T) {
 		flags:     mustFlagStore(t),
 	}
 
-	got := r.pauseArgs(ocispec.PauseContainer)
+	got := r.pauseArgs(ocispec.SandboxID)
 	want := []string{
 		"-global1",
 		"-global2",
 		"-root", "/node/actors/test-actor-123/runsc-state",
 		"pause",
-		ocispec.PauseContainer,
+		ocispec.SandboxID,
 	}
 
 	if !reflect.DeepEqual(got, want) {
@@ -386,13 +387,13 @@ func TestResumeArgs(t *testing.T) {
 		flags:     mustFlagStore(t),
 	}
 
-	got := r.resumeArgs(ocispec.PauseContainer)
+	got := r.resumeArgs(ocispec.SandboxID)
 	want := []string{
 		"-global1",
 		"-global2",
 		"-root", "/node/actors/test-actor-123/runsc-state",
 		"resume",
-		ocispec.PauseContainer,
+		ocispec.SandboxID,
 	}
 
 	if !reflect.DeepEqual(got, want) {
@@ -424,5 +425,70 @@ func TestRestoreWorkloadRejectsEmptyRestoreDir(t *testing.T) {
 				t.Fatalf("RestoreWorkload() = %v, want InvalidArgument naming %s", err, tc.want)
 			}
 		})
+	}
+}
+
+func TestCallSandboxControl_MockUDS(t *testing.T) {
+	tempDir := t.TempDir()
+	actorDirs := &ateworkerpb.ActorDirs{
+		RootDir:      tempDir,
+		OciBundleDir: filepath.Join(tempDir, "bundle"),
+	}
+	stateDir := runscStateDir(actorDirs)
+	if err := os.MkdirAll(stateDir, 0755); err != nil {
+		t.Fatalf("MkdirAll stateDir: %v", err)
+	}
+
+	sockPath := filepath.Join(stateDir, "runsc-" + ocispec.SandboxID + ".sock")
+	l, err := net.Listen("unix", sockPath)
+	if err != nil {
+		t.Fatalf("net.Listen unix: %v", err)
+	}
+	defer l.Close()
+
+	// Server goroutine to handle Pause and Resume requests
+	calledMethods := make(chan string, 2)
+	go func() {
+		for {
+			conn, err := l.Accept()
+			if err != nil {
+				return
+			}
+			var call urpcCall
+			if err := json.NewDecoder(conn).Decode(&call); err != nil {
+				conn.Close()
+				return
+			}
+			calledMethods <- call.Method
+			resp, _ := json.Marshal(urpcResult{Success: true})
+			_, _ = conn.Write(resp)
+			conn.Close()
+		}
+	}()
+
+	// runsc has an invalid path so any fallback to CLI fails
+	r := &runsc{
+		path:      "/invalid/runsc/path",
+		actorUID:  "actor-uds",
+		actorDirs: actorDirs,
+		flags:     mustFlagStore(t),
+	}
+
+	ctx := context.Background()
+
+	// 1. cmdPause should succeed over direct UDS
+	if err := r.cmdPause(ctx, ocispec.SandboxID); err != nil {
+		t.Fatalf("cmdPause over mock UDS failed: %v", err)
+	}
+	if got := <-calledMethods; got != "containerManager.Pause" {
+		t.Errorf("expected containerManager.Pause, got %q", got)
+	}
+
+	// 2. cmdResume should succeed over direct UDS
+	if err := r.cmdResume(ctx, ocispec.SandboxID); err != nil {
+		t.Fatalf("cmdResume over mock UDS failed: %v", err)
+	}
+	if got := <-calledMethods; got != "containerManager.Resume" {
+		t.Errorf("expected containerManager.Resume, got %q", got)
 	}
 }
