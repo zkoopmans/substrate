@@ -43,8 +43,8 @@ spec:
     assets:
       amd64:
         gvisor:
-          url: "gs://gvisor/releases/nightly/2026-10-17/x86_64/gvisor.tar.zstd"
-          sha256: "fa72f0d45756c69a30beec21222c78241b0d330c36f4f2185648617cc23415c8"
+          url: "gs://perf-results/gvisor-freeze/x86_64/gvisor.tar.zstd"
+          sha256: "88a89b1d91534365a648c7690660bb8f7e3e3f96f6f6d66fec43ff2f89c0db25"
       arm64:
         gvisor:
           url: "gs://gvisor/releases/nightly/2026-10-17/aarch64/gvisor.tar.zstd"
