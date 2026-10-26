@@ -396,3 +396,30 @@ func TestFreezeAndThawValidation(t *testing.T) {
 		t.Errorf("ThawWorkload(no session) = %v, want FailedPrecondition", err)
 	}
 }
+
+func TestEnsureThawed(t *testing.T) {
+	s := &AteWorkerService{
+		cgroupRoot: t.TempDir(),
+		locks:      actorlock.New(),
+		inFlight:   actorlock.NewInFlight(),
+		actors:     make(map[string]*hostedActor),
+	}
+	ctx := context.Background()
+
+	// 1. Non-frozen actor is a no-op
+	hosted := &hostedActor{}
+	hosted.isFrozen.Store(false)
+	if err := s.ensureThawed(ctx, hosted, "actor-1"); err != nil {
+		t.Fatalf("ensureThawed(not frozen) = %v, want nil", err)
+	}
+
+	// 2. Frozen actor without session clears flag cleanly
+	hosted.isFrozen.Store(true)
+	if err := s.ensureThawed(ctx, hosted, "actor-1"); err != nil {
+		t.Fatalf("ensureThawed(frozen, no session) = %v, want nil", err)
+	}
+	if hosted.isFrozen.Load() {
+		t.Errorf("isFrozen = true, want false after ensureThawed")
+	}
+}
+

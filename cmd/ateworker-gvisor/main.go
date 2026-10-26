@@ -903,6 +903,10 @@ func (s *AteWorkerService) CheckpointWorkload(ctx context.Context, req *ateworke
 	default:
 		return nil, fmt.Errorf("unsupported snapshot fidelity: %v", fidelity)
 	}
+	// Ensure any frozen actor is thawed so Sentry can participate in the checkpoint.
+	if err := s.ensureThawed(ctx, hosted, req.GetActorUid()); err != nil {
+		return nil, fmt.Errorf("while thawing frozen actor before checkpoint: %w", err)
+	}
 	if err := checkpointIsolated(ctx, s.cgroupRoot, req.GetActorUid(), req.GetActorDirs(), checkpointFn, terminate); err != nil {
 		return nil, err
 	}
@@ -965,8 +969,37 @@ func (s *AteWorkerService) FreezeWorkload(ctx context.Context, req *ateworkerpb.
 		}
 	}
 
+	hosted.isFrozen.Store(true)
 	s.actorLogger.EmitLifecycleLog(ctx, "Actor frozen", hosted.attribution)
 	return &ateworkerpb.FreezeWorkloadResponse{}, nil
+}
+
+// ensureThawed ensures that if an actor is currently frozen in its host cgroup,
+// the cgroup is thawed and guest execution is resumed before performing operations
+// like checkpointing or termination that require Sentry responsiveness.
+func (s *AteWorkerService) ensureThawed(ctx context.Context, hosted *hostedActor, actorUID string) error {
+	if hosted == nil || !hosted.isFrozen.Load() {
+		return nil
+	}
+	if hosted.session == nil || hosted.session.rcmd == nil {
+		hosted.isFrozen.Store(false)
+		return nil
+	}
+	cgroupDir := filepath.Join(s.cgroupRoot, ocispec.GVisorCgroupLeaf(actorUID, sandboxCgroupContainer))
+
+	// 1. Thaw the leaf cgroup containing Sentry and Gofers.
+	if err := cgroupstats.Thaw(ctx, cgroupDir); err != nil {
+		return apierror.Internal("thawing cgroup: %v", err)
+	}
+
+	// 2. Resume the sandbox tasks via runsc resume. This also resumes Timekeeper.
+	if err := hosted.session.rcmd.cmdResume(ctx, ocispec.SandboxID); err != nil {
+		return apierror.Internal("resuming sandbox: %v", err)
+	}
+
+	hosted.isFrozen.Store(false)
+	s.actorLogger.EmitLifecycleLog(ctx, "Actor thawed", hosted.attribution)
+	return nil
 }
 
 // ThawWorkload thaws the sandbox cgroup and resumes guest execution.
@@ -989,19 +1022,10 @@ func (s *AteWorkerService) ThawWorkload(ctx context.Context, req *ateworkerpb.Th
 		return nil, apierror.FailedPrecondition("actor %q has no active session", req.GetActorUid())
 	}
 
-	cgroupDir := filepath.Join(s.cgroupRoot, ocispec.GVisorCgroupLeaf(req.GetActorUid(), sandboxCgroupContainer))
-
-	// 1. Thaw the leaf cgroup containing Sentry and Gofers.
-	if err := cgroupstats.Thaw(ctx, cgroupDir); err != nil {
-		return nil, apierror.Internal("thawing cgroup: %v", err)
+	if err := s.ensureThawed(ctx, hosted, req.GetActorUid()); err != nil {
+		return nil, err
 	}
 
-	// 2. Resume the sandbox tasks via runsc resume. This also resumes Timekeeper.
-	if err := hosted.session.rcmd.cmdResume(ctx, ocispec.SandboxID); err != nil {
-		return nil, apierror.Internal("resuming sandbox: %v", err)
-	}
-
-	s.actorLogger.EmitLifecycleLog(ctx, "Actor thawed", hosted.attribution)
 	return &ateworkerpb.ThawWorkloadResponse{}, nil
 }
 
@@ -1342,6 +1366,9 @@ func (s *AteWorkerService) TerminateWorkload(ctx context.Context, req *ateworker
 func (s *AteWorkerService) terminateWorkload(ctx context.Context, actorRef resources.ActorRef, actorUID, runscPath string, actorDirs *ateworkerpb.ActorDirs, containers []*ateworkerpb.Container) error {
 	if hosted := s.lookupActor(actorUID); hosted != nil {
 		hosted.stopping.Store(true)
+		if err := s.ensureThawed(ctx, hosted, actorUID); err != nil {
+			slog.WarnContext(ctx, "Failed to thaw actor before terminate", slog.String("actorUID", actorUID), slog.Any("err", err))
+		}
 	}
 	var errs []error
 	if err := s.tunnel.Deactivate(ctx, resources.ActorAttribution{Ref: actorRef, UID: actorUID}); err != nil {

@@ -53,6 +53,8 @@ type hostedActor struct {
 	// nothing that waits on it later can be fooled by a reused pid. Nil if it
 	// could not be pinned. Set once, under the actor's lock.
 	sandbox *sandboxProcess
+	// isFrozen tracks whether this actor host cgroup is currently in TASK_FROZEN (cgroup.freeze = 1).
+	isFrozen atomic.Bool
 }
 
 // admitActor reserves capacity before network setup. An actor that is already
