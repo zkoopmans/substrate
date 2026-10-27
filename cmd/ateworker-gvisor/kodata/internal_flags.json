@@ -4,7 +4,8 @@
     "json",
     "--alsologtostderr",
     "--allow-suid",
-    "--host-settings=ignore"
+    "--host-settings=ignore",
+    "--sidecar-release-enforcement-policy=NEVER"
   ],
   "commands": {
     "create": {

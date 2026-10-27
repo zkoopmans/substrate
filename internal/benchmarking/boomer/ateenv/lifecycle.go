@@ -44,6 +44,7 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
@@ -107,7 +108,7 @@ func init() {
 // routerGRPCTarget converts an HTTP/HTTPS router URL into a dns:/// gRPC dial target.
 func routerGRPCTarget(rawURL string) (string, error) {
 	if rawURL == "" {
-		rawURL = "http://atenet-router.ate-system.svc.cluster.local"
+		rawURL = "https://atenet-router.ate-system.svc.cluster.local:443"
 	}
 	if !strings.Contains(rawURL, "://") {
 		rawURL = "http://" + rawURL
@@ -116,16 +117,17 @@ func routerGRPCTarget(rawURL string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if strings.EqualFold(u.Scheme, "https") {
-		return "", fmt.Errorf("router URL %q uses https, which is not supported by the plaintext gRPC dialer", rawURL)
-	}
 	host := u.Hostname()
 	if host == "" {
 		return "", fmt.Errorf("router URL %q has empty host", rawURL)
 	}
 	port := u.Port()
 	if port == "" {
-		port = "80"
+		if strings.EqualFold(u.Scheme, "https") {
+			port = "443"
+		} else {
+			port = "80"
+		}
 	}
 	return "dns:///" + net.JoinHostPort(host, port), nil
 }
@@ -333,10 +335,19 @@ func (r *taskRuntime) startUser(ctx context.Context) (*ateEnvUser, error) {
 		if err != nil {
 			return nil, err
 		}
+		useTLS := r.cfg.RouterURL == "" || strings.HasPrefix(strings.ToLower(r.cfg.RouterURL), "https://")
 		dialFn = func() (ateenvv1alpha.ProcessServiceClient, io.Closer, error) {
+			creds := insecure.NewCredentials()
+			if useTLS {
+				tlsCfg, err := boomerutil.RouterTLSConfig()
+				if err != nil {
+					return nil, nil, err
+				}
+				creds = credentials.NewTLS(tlsCfg)
+			}
 			conn, err := grpc.NewClient(
 				target,
-				grpc.WithTransportCredentials(insecure.NewCredentials()),
+				grpc.WithTransportCredentials(creds),
 				grpc.WithDisableServiceConfig(),
 			)
 			if err != nil {

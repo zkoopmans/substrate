@@ -15,10 +15,14 @@
 package boomerutil
 
 import (
+	"crypto/tls"
+	"crypto/x509"
+	"errors"
 	"fmt"
 
 	"go.ate.dev/substrate/api/ateapi/v1"
 	"go.ate.dev/substrate/internal/ateapiauth"
+	"go.ate.dev/substrate/internal/credbundle"
 	_ "go.ate.dev/substrate/internal/k8sresolver"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
@@ -28,7 +32,7 @@ import (
 )
 
 const (
-	// ateapiCAFile verifies ateapi's servicedns serving cert;
+	// ateapiCAFile verifies ateapi's and atenet-router's servicedns serving cert;
 	// ateapiCredBundle is the benchmark's own pod certificate. Both are
 	// projected in by benchmarking/locust/manifests/locust.yaml.
 	ateapiCAFile     = "/run/servicedns-ca/ca.crt"
@@ -37,7 +41,44 @@ const (
 	// ateapiServerName is the DNS SAN on the apiserver's serving cert, which
 	// is shorter than the endpoint the benchmark dials.
 	ateapiServerName = "api.ate-system.svc"
+
+	// routerServerName is the DNS SAN on atenet-router's serving cert.
+	routerServerName = "atenet-router.ate-system.svc"
 )
+
+// RouterTLSConfig returns an mTLS client configuration for talking to
+// atenet-router over HTTPS / gRPC TLS using the pod identity credential bundle.
+func RouterTLSConfig() (*tls.Config, error) {
+	loadRootCAs := credbundle.PoolLoader(ateapiCAFile)
+	if _, err := loadRootCAs(); err != nil {
+		return nil, fmt.Errorf("loading router CA file: %w", err)
+	}
+	return &tls.Config{
+		MinVersion:           tls.VersionTLS13,
+		ServerName:           routerServerName,
+		GetClientCertificate: credbundle.ClientLoader(ateapiCredBundle),
+		InsecureSkipVerify:   true, //nolint:gosec
+		VerifyConnection: func(cs tls.ConnectionState) error {
+			pool, err := loadRootCAs()
+			if err != nil {
+				return err
+			}
+			if len(cs.PeerCertificates) == 0 {
+				return errors.New("router presented no certificate")
+			}
+			inter := x509.NewCertPool()
+			for _, c := range cs.PeerCertificates[1:] {
+				inter.AddCert(c)
+			}
+			_, err = cs.PeerCertificates[0].Verify(x509.VerifyOptions{
+				Roots:         pool,
+				Intermediates: inter,
+				DNSName:       routerServerName,
+			})
+			return err
+		},
+	}, nil
+}
 
 // DialControl opens an authenticated gRPC connection to ateapi.
 //

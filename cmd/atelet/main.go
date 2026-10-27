@@ -736,6 +736,66 @@ type Atelet struct {
 	bootID string
 	// checkpointTimeout is defaultCheckpointTimeout. Shortened in tests.
 	checkpointTimeout time.Duration
+	// frozenActors maps actorUID -> frozenActorState for actors frozen in-place via FreezeWorkload.
+	frozenActors sync.Map
+}
+
+type frozenActorState struct {
+	workerPodUID string
+	spec         *ateletpb.WorkloadSpec
+}
+
+func (s *Atelet) materializeFrozenCheckpoint(ctx context.Context, actorRef resources.ActorRef, actorUID string, snapshot *ateletpb.Snapshot, frozen frozenActorState) error {
+	sandboxRec, err := readSandboxRecord(actorUID)
+	if err != nil {
+		return err
+	}
+	assetPaths, err := s.ensureSandboxAssets(ctx, sandboxRec, ateletpath.SandboxAssetsDir(actorUID))
+	if err != nil {
+		return err
+	}
+	client, err := s.dialWorker(ctx, frozen.workerPodUID)
+	if err != nil {
+		return err
+	}
+	spec, err := buildWorkerWorkloadSpec(frozen.spec, nil)
+	if err != nil {
+		return err
+	}
+	resp, err := client.CheckpointWorkload(ctx, &ateworkerpb.CheckpointWorkloadRequest{
+		Atespace:              actorRef.Atespace,
+		ActorName:             actorRef.Name,
+		ActorTemplateAtespace: sandboxRec.ActorTemplateAtespace,
+		ActorTemplateName:     sandboxRec.ActorTemplateName,
+		RunscPath:             runscPathFor(assetPaths),
+		Spec:                  spec,
+		Fidelity:              toWorkerFidelity(snapshot.GetFidelity()),
+		ActorUid:              actorUID,
+		ActorDirs:             ateletpath.ActorDirs(actorUID),
+	})
+	if err != nil {
+		return err
+	}
+	sandboxRec.SnapshotFiles, sandboxRec.DataSnapshotFiles, err = checkpointSnapshotFiles(resp, true)
+	if err != nil {
+		return err
+	}
+	fakeReq := &ateletpb.CheckpointRequest{
+		Atespace:              actorRef.Atespace,
+		ActorName:             actorRef.Name,
+		ActorUid:              actorUID,
+		ActorTemplateAtespace: sandboxRec.ActorTemplateAtespace,
+		ActorTemplateName:     sandboxRec.ActorTemplateName,
+		Snapshot:              snapshot,
+	}
+	_ = os.RemoveAll(ateletpath.LocalSnapshotDir(actorUID, snapshot.GetSnapshotUuid()))
+	if err := s.moveLocalCheckpoint(ctx, fakeReq, sandboxRec); err != nil {
+		return err
+	}
+	s.systemInfoVolumes.Deregister(actorUID)
+	_ = s.unmountExternalVolumes(ctx, actorUID, frozen.spec.GetVolumes())
+	_ = actordirs.ResetActorDirs(actorUID)
+	return nil
 }
 
 // defaultCheckpointTimeout bounds a Checkpoint once it detaches from the
@@ -1074,6 +1134,52 @@ func (s *Atelet) Checkpoint(ctx context.Context, req *ateletpb.CheckpointRequest
 		return nil, apierror.InvalidArgument("invalid workload spec: %v", err)
 	}
 
+	if os.Getenv("ATE_GVISOR_FREEZE") == "true" &&
+		sandboxRec.SandboxClass == "gvisor" &&
+		req.GetUploadConfig().GetMode() == ateletpb.UploadMode_UPLOAD_MODE_DEFERRED &&
+		req.GetSnapshot().GetFidelity() == ateletpb.SnapshotFidelity_SNAPSHOT_FIDELITY_MEMORY {
+		tWorker := time.Now()
+		_, err := client.FreezeWorkload(opCtx, &ateworkerpb.FreezeWorkloadRequest{
+			ActorUid:       actorUID,
+			MemoryLowBytes: 40 << 20,
+		})
+		dWorker = time.Since(tWorker)
+		if err != nil {
+			return nil, fmt.Errorf("while calling worker FreezeWorkload: %w", err)
+		}
+		snap := snapshottracker.SnapshotRef{Snapshot: req.GetSnapshot(), CommitTime: time.Now(), Actor: actorRef}
+		if err := os.MkdirAll(checkpointDir, 0o700); err != nil {
+			return nil, fmt.Errorf("while creating checkpoint dir for frozen marker: %w", err)
+		}
+		if err := os.WriteFile(filepath.Join(checkpointDir, "frozen.marker"), []byte("frozen"), 0o600); err != nil {
+			return nil, fmt.Errorf("while writing frozen marker: %w", err)
+		}
+		sandboxRec.SnapshotFiles = []string{"frozen.marker"}
+		sandboxRec.DataSnapshotFiles = nil
+		sandboxRec.Atespace = req.GetAtespace()
+		sandboxRec.ActorName = req.GetActorName()
+		sandboxRec.ActorUID = req.GetActorUid()
+		sandboxRec.ActorTemplateAtespace = req.GetActorTemplateAtespace()
+		sandboxRec.ActorTemplateName = req.GetActorTemplateName()
+		sandboxRec.Fidelity = ateattr.SnapshotFidelityValue(req.GetSnapshot().GetFidelity())
+		tPersist := time.Now()
+		if err := s.moveLocalCheckpoint(opCtx, req, sandboxRec); err != nil {
+			dPersist = time.Since(tPersist)
+			return nil, fmt.Errorf("while moving frozen local marker: %w", err)
+		}
+		state := s.snapshots.CommitLocal(actorUID, snap)
+		dPersist = time.Since(tPersist)
+		s.frozenActors.Store(actorUID, frozenActorState{
+			workerPodUID: req.GetWorkerPodUid(),
+			spec:         req.GetSpec(),
+		})
+		tCleanup := time.Now()
+		_ = snapshottracker.PruneLocalCheckpoints(opCtx, actorUID, s.snapshots.LocalSnapshotsToKeep(actorUID)...)
+		dCleanup = time.Since(tCleanup)
+		return &ateletpb.CheckpointResponse{State: state}, nil
+	}
+
+	s.frozenActors.Delete(actorUID)
 	tWorker := time.Now()
 	resp, err := client.CheckpointWorkload(opCtx, &ateworkerpb.CheckpointWorkloadRequest{
 		Atespace:              actorRef.Atespace,
@@ -1432,6 +1538,13 @@ func (s *Atelet) PromoteSnapshot(ctx context.Context, req *ateletpb.PromoteSnaps
 // sandbox class the snapshot's manifest names in op, and how long the upload
 // took in dPersist.
 func (s *Atelet) promoteLocalSnapshot(ctx context.Context, req *ateletpb.PromoteSnapshotRequest, uri resources.SnapshotURI, op *snapshotOp, dPersist *time.Duration) (state *ateletpb.ActorSnapshotState, err error) {
+	if val, ok := s.frozenActors.LoadAndDelete(req.GetActorUid()); ok {
+		frozen := val.(frozenActorState)
+		actorRef := resources.ActorRef{Atespace: req.GetAtespace(), Name: req.GetActorName()}
+		if matErr := s.materializeFrozenCheckpoint(ctx, actorRef, req.GetActorUid(), req.GetSnapshot(), frozen); matErr != nil {
+			return nil, fmt.Errorf("while materializing frozen checkpoint for promote: %w", matErr)
+		}
+	}
 	localDir := ateletpath.LocalSnapshotDir(req.GetActorUid(), req.GetSnapshot().GetSnapshotUuid())
 
 	// A detach or a background upload of this snapshot in progress finishes
@@ -1652,6 +1765,48 @@ func (s *Atelet) Restore(ctx context.Context, req *ateletpb.RestoreRequest) (res
 		return nil, err
 	}
 	defer endStart()
+
+	if val, ok := s.frozenActors.LoadAndDelete(actorUID); ok {
+		frozen := val.(frozenActorState)
+		if frozen.workerPodUID == req.GetWorkerPodUid() {
+			op.kind = ateattr.SnapshotKindLocal
+			sandboxRec, recErr := readSandboxRecord(actorUID)
+			if recErr == nil {
+				op.sandboxClass = sandboxRec.SandboxClass
+				assetPaths, assetErr := s.ensureSandboxAssets(ctx, sandboxRec, ateletpath.SandboxAssetsDir(actorUID))
+				client, dialErr := s.dialWorker(ctx, req.GetWorkerPodUid())
+				spec, specErr := buildWorkerWorkloadSpec(req.GetSpec(), nil)
+				if assetErr == nil && dialErr == nil && specErr == nil {
+					actorDirs := ateletpath.ActorDirs(actorUID)
+					actorDirs.RestoreDir = ateletpath.LocalSnapshotDir(actorUID, req.GetSnapshot().GetSnapshotUuid())
+					tWorker := time.Now()
+					workerResp, restoreErr := client.RestoreWorkload(ctx, &ateworkerpb.RestoreWorkloadRequest{
+						Atespace:              actorRef.Atespace,
+						ActorName:             actorRef.Name,
+						ActorTemplateAtespace: req.GetActorTemplateAtespace(),
+						ActorTemplateName:     req.GetActorTemplateName(),
+						RunscPath:             runscPathFor(assetPaths),
+						RuntimeAssetPaths:     assetPaths,
+						Spec:                  spec,
+						Fidelity:              toWorkerFidelity(req.GetSnapshot().GetFidelity()),
+						ActorUid:              req.GetActorUid(),
+						ActorDirs:             actorDirs,
+						PreserveRestoreDir:    true,
+						EgressGateway:         toWorkerEgressGateway(req.GetEgressGateway()),
+						Resources:             toAteworkerResources(req.GetResources()),
+					})
+					dWorker = time.Since(tWorker)
+					if restoreErr == nil {
+						return &ateletpb.RestoreResponse{WorkerEpoch: workerResp.GetWorkerEpoch()}, nil
+					}
+					slog.WarnContext(ctx, "Fast-path thaw restore failed; materializing checkpoint", slog.Any("actor", actorRef), slog.Any("err", restoreErr))
+				}
+			}
+		}
+		if matErr := s.materializeFrozenCheckpoint(ctx, actorRef, actorUID, req.GetSnapshot(), frozen); matErr != nil {
+			slog.WarnContext(ctx, "Failed to materialize frozen checkpoint before full restore", slog.Any("actor", actorRef), slog.Any("err", matErr))
+		}
+	}
 
 	// Canceled so ate-api-server retries instead of crashing the actor. A
 	// failure here points at atelet or the node's disk, not the actor.
@@ -2056,6 +2211,12 @@ func (s *Atelet) Terminate(ctx context.Context, req *ateletpb.TerminateRequest) 
 // it would be worse than leaving them.
 func (s *Atelet) terminateWorkloadOnWorker(ctx context.Context, req *ateletpb.TerminateRequest, actorRef resources.ActorRef, actorUID string) error {
 	workerPodUID := req.GetWorkerPodUid()
+	if val, ok := s.frozenActors.LoadAndDelete(actorUID); ok {
+		frozen := val.(frozenActorState)
+		if workerPodUID == "" {
+			workerPodUID = frozen.workerPodUID
+		}
+	}
 	if workerPodUID == "" {
 		// No worker named: the actor has no worker pod left, only state on
 		// this node, such as a suspended or crashed actor's on delete or revert.

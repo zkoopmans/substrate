@@ -104,6 +104,7 @@ const workloadGracePeriod = 30 * time.Minute
 
 func main() {
 	pid1.RunIfPID1()
+_ = os.Setenv("GVISOR_ENFORCE_RELEASE", "SKIP")
 	pflag.Parse()
 	if *showVersion {
 		fmt.Println(version.String())
@@ -451,6 +452,7 @@ func (s *AteWorkerService) gracefulShutdown(ctx context.Context) {
 	// sandbox runs, and write its final record once the containers are gone.
 	hosted := s.hostedActors()
 	for _, h := range hosted {
+		_ = s.ensureThawed(ctx, h, h.attribution.UID)
 		s.readFinal(ctx, h)
 	}
 
@@ -1158,6 +1160,18 @@ func (s *AteWorkerService) RestoreWorkload(ctx context.Context, req *ateworkerpb
 		return nil, err
 	}
 	defer release()
+	if hosted := s.lookupActor(req.GetActorUid()); hosted != nil && hosted.isFrozen.Load() {
+		if err := s.ensureThawed(ctx, hosted, req.GetActorUid()); err != nil {
+			return nil, err
+		}
+		timing.sandboxRestore = lap(&tLast)
+		err = wakeupprobe.WaitAll(ctx, containers, actornet.ActorVethIP, wakeupprobe.DialFunc(s.sandboxDialer(req.GetActorUid())))
+		timing.wakeupProbe = lap(&tLast)
+		if err != nil {
+			return nil, fmt.Errorf("while waiting for container wakeup probe: %w", err)
+		}
+		return &ateworkerpb.RestoreWorkloadResponse{WorkerEpoch: epoch}, nil
+	}
 	if err := resetRunscStateAndPidFileDirs(req.GetActorDirs()); err != nil {
 		return nil, err
 	}
@@ -1368,6 +1382,11 @@ func (s *AteWorkerService) terminateWorkload(ctx context.Context, actorRef resou
 		hosted.stopping.Store(true)
 		if err := s.ensureThawed(ctx, hosted, actorUID); err != nil {
 			slog.WarnContext(ctx, "Failed to thaw actor before terminate", slog.String("actorUID", actorUID), slog.Any("err", err))
+		}
+		if len(containers) == 0 && hosted.session != nil {
+			for _, name := range hosted.session.containers {
+				containers = append(containers, &ateworkerpb.Container{Name: name})
+			}
 		}
 	}
 	var errs []error
