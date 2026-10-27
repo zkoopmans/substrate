@@ -1,6 +1,6 @@
 # gVisor Cgroup v2 Freezing Verification & Benchmark Suite
 
-This directory contains the verification harnesses and microbenchmark scripts used to validate Two-Phase Cgroup v2 Freezing for gVisor in Substrate.
+This directory contains the verification harnesses, microbenchmark scripts, and end-to-end GKE cluster benchmark results used to validate Two-Phase Cgroup v2 Freezing for gVisor in Substrate.
 
 ## Contents
 
@@ -23,3 +23,10 @@ This directory contains the verification harnesses and microbenchmark scripts us
 
 4. **Density & Fleet Benchmark:**
    - `benchmark_density.py`: 50-sandbox concurrent density harness measuring host CPU utilization, PSI metrics, context switch reduction (0.0 CS/sec), and p50 thaw latency.
+
+5. **End-to-End GKE Cluster A/B & 3-Way Runtime-Optimized Benchmark Results (`substrate-poc`):**
+   - `RESULTS.md`: Full empirical report comparing gVisor Baseline (`ATE_GVISOR_FREEZE=false`), gVisor Frozen (`ATE_GVISOR_FREEZE=true`), and Cloud Hypervisor microVM (`ateworker-microvm`) across small (`1`, `5`, `10` users, `512Mi`/`1Gi` RAM) and high (`25`, `50`, `100`, `250` actors) scales on runtime-optimized C3 node pools (`2 x c3-highcpu-8` for gVisor vs `2 x c3-highmem-4` for microVM).
+   - `ab_resource_telemetry.json`: Raw Prometheus/cAdvisor + Locust telemetry for the small-scale A/B and 512Mi/1Gi memory suites.
+   - `high_scale_telemetry.json`: Raw Prometheus/cAdvisor + Locust telemetry for the 3-way runtime-optimized high actor-count sweep (`25`, `50`, `100`, `250` actors).
+   - `high_scale_telemetry_50m_10replicas.json`: Raw telemetry from the 10-replica / 50m CPU quota experiment demonstrating why 1 worker pod per node (`replicas: 2`) is required for `AssignedNode` frozen-sandbox affinity.
+   - `run_high_scale_sweep.py`: Automated 3-way GKE benchmark sweep and Prometheus telemetry harvesting script.

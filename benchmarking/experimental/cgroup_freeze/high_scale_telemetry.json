@@ -1,0 +1,1946 @@
+{
+  "glutton_25_actors_gvisor_baseline": {
+    "tag": "gvisor_baseline",
+    "pool": "gvisor-pool",
+    "users": 25,
+    "duration_s": 60,
+    "window": [
+      1793074415,
+      1793074468
+    ],
+    "client_ops": {
+      "CreateActor": {
+        "reqs": 25,
+        "fails": 0,
+        "avg_ms": 17,
+        "min_ms": 6,
+        "max_ms": 32,
+        "med_ms": 17,
+        "rps": 0.42,
+        "p50_ms": 17,
+        "p90_ms": 31,
+        "p95_ms": 32,
+        "p99_ms": 32,
+        "p100_ms": 32
+      },
+      "CreateAtespace": {
+        "reqs": 25,
+        "fails": 0,
+        "avg_ms": 143,
+        "min_ms": 2,
+        "max_ms": 241,
+        "med_ms": 230,
+        "rps": 0.42,
+        "p50_ms": 230,
+        "p90_ms": 240,
+        "p95_ms": 240,
+        "p99_ms": 240,
+        "p100_ms": 240
+      },
+      "GluttonPing": {
+        "reqs": 1123,
+        "fails": 0,
+        "avg_ms": 9,
+        "min_ms": 4,
+        "max_ms": 61,
+        "med_ms": 9,
+        "rps": 19.03,
+        "p50_ms": 9,
+        "p90_ms": 14,
+        "p95_ms": 17,
+        "p99_ms": 30,
+        "p100_ms": 61
+      },
+      "ResumeActor": {
+        "reqs": 1098,
+        "fails": 0,
+        "avg_ms": 179,
+        "min_ms": 85,
+        "max_ms": 400,
+        "med_ms": 180,
+        "rps": 18.61,
+        "p50_ms": 180,
+        "p90_ms": 260,
+        "p95_ms": 290,
+        "p99_ms": 340,
+        "p100_ms": 400
+      },
+      "ResumeActorFirstResume": {
+        "reqs": 25,
+        "fails": 0,
+        "avg_ms": 515,
+        "min_ms": 222,
+        "max_ms": 817,
+        "med_ms": 530,
+        "rps": 0.42,
+        "p50_ms": 530,
+        "p90_ms": 800,
+        "p95_ms": 810,
+        "p99_ms": 820,
+        "p100_ms": 820
+      },
+      "SuspendActorAsync": {
+        "reqs": 1123,
+        "fails": 0,
+        "avg_ms": 115,
+        "min_ms": 59,
+        "max_ms": 289,
+        "med_ms": 110,
+        "rps": 19.03,
+        "p50_ms": 110,
+        "p90_ms": 180,
+        "p95_ms": 200,
+        "p99_ms": 240,
+        "p100_ms": 290
+      }
+    },
+    "node_cpu_cores": {
+      "avg": 4.4678,
+      "p50": 5.8171,
+      "p95": 5.8471,
+      "max": 5.8471
+    },
+    "worker_cpu_cores": {
+      "avg": 3.5143,
+      "p50": 4.2767,
+      "p95": 4.9154,
+      "max": 4.9154
+    },
+    "atelet_cpu_cores": {
+      "avg": 0.135,
+      "p50": 0.1672,
+      "p95": 0.194,
+      "max": 0.194
+    },
+    "node_mem_ws_mib": {
+      "avg": 3112.9556,
+      "p50": 3089.8594,
+      "p95": 3244.8984,
+      "max": 3244.8984
+    },
+    "worker_mem_ws_mib": {
+      "avg": 210.6115,
+      "p50": 215.0039,
+      "p95": 294.9141,
+      "max": 294.9141
+    },
+    "worker_mem_rss_mib": {
+      "avg": 171.6609,
+      "p50": 173.832,
+      "p95": 231.7852,
+      "max": 231.7852
+    },
+    "atelet_mem_ws_mib": {
+      "avg": 104.3235,
+      "p50": 109.3438,
+      "p95": 115.6328,
+      "max": 115.6328
+    },
+    "node_disk_write_mbs": {
+      "avg": 9.5573,
+      "p50": 11.3221,
+      "p95": 12.8248,
+      "max": 12.8248
+    },
+    "node_cpu_psi_pct": {
+      "avg": 15.3528,
+      "p50": 19.0239,
+      "p95": 20.1564,
+      "max": 20.1564
+    },
+    "node_mem_psi_pct": {
+      "avg": 0.0093,
+      "p50": 0.0,
+      "p95": 0.0341,
+      "max": 0.0341
+    },
+    "node_io_psi_pct": {
+      "avg": 0.3914,
+      "p50": 0.3704,
+      "p95": 0.466,
+      "max": 0.466
+    }
+  },
+  "glutton_50_actors_gvisor_baseline": {
+    "tag": "gvisor_baseline",
+    "pool": "gvisor-pool",
+    "users": 50,
+    "duration_s": 60,
+    "window": [
+      1793074512,
+      1793074565
+    ],
+    "client_ops": {
+      "CreateActor": {
+        "reqs": 50,
+        "fails": 0,
+        "avg_ms": 22,
+        "min_ms": 4,
+        "max_ms": 51,
+        "med_ms": 13,
+        "rps": 0.85,
+        "p50_ms": 13,
+        "p90_ms": 48,
+        "p95_ms": 50,
+        "p99_ms": 51,
+        "p100_ms": 51
+      },
+      "CreateAtespace": {
+        "reqs": 50,
+        "fails": 0,
+        "avg_ms": 135,
+        "min_ms": 2,
+        "max_ms": 337,
+        "med_ms": 10,
+        "rps": 0.85,
+        "p50_ms": 12,
+        "p90_ms": 330,
+        "p95_ms": 330,
+        "p99_ms": 340,
+        "p100_ms": 340
+      },
+      "GluttonPing": {
+        "reqs": 2051,
+        "fails": 0,
+        "avg_ms": 12,
+        "min_ms": 4,
+        "max_ms": 80,
+        "med_ms": 10,
+        "rps": 34.76,
+        "p50_ms": 10,
+        "p90_ms": 20,
+        "p95_ms": 26,
+        "p99_ms": 35,
+        "p100_ms": 80
+      },
+      "ResumeActor": {
+        "reqs": 2004,
+        "fails": 0,
+        "avg_ms": 244,
+        "min_ms": 87,
+        "max_ms": 569,
+        "med_ms": 240,
+        "rps": 33.97,
+        "p50_ms": 240,
+        "p90_ms": 380,
+        "p95_ms": 410,
+        "p99_ms": 470,
+        "p100_ms": 570
+      },
+      "ResumeActorFirstResume": {
+        "reqs": 50,
+        "fails": 0,
+        "avg_ms": 314,
+        "min_ms": 192,
+        "max_ms": 489,
+        "med_ms": 320,
+        "rps": 0.85,
+        "p50_ms": 320,
+        "p90_ms": 410,
+        "p95_ms": 440,
+        "p99_ms": 490,
+        "p100_ms": 490
+      },
+      "SuspendActorAsync": {
+        "reqs": 2043,
+        "fails": 0,
+        "avg_ms": 165,
+        "min_ms": 60,
+        "max_ms": 434,
+        "med_ms": 160,
+        "rps": 34.63,
+        "p50_ms": 160,
+        "p90_ms": 270,
+        "p95_ms": 290,
+        "p99_ms": 360,
+        "p100_ms": 430
+      }
+    },
+    "node_cpu_cores": {
+      "avg": 8.9913,
+      "p50": 11.4024,
+      "p95": 11.6379,
+      "max": 11.6379
+    },
+    "worker_cpu_cores": {
+      "avg": 6.7417,
+      "p50": 8.1999,
+      "p95": 9.5799,
+      "max": 9.5799
+    },
+    "atelet_cpu_cores": {
+      "avg": 0.2622,
+      "p50": 0.3361,
+      "p95": 0.4009,
+      "max": 0.4009
+    },
+    "node_mem_ws_mib": {
+      "avg": 3291.1953,
+      "p50": 3305.0586,
+      "p95": 3464.4297,
+      "max": 3464.4297
+    },
+    "worker_mem_ws_mib": {
+      "avg": 254.6914,
+      "p50": 250.1367,
+      "p95": 373.2773,
+      "max": 373.2773
+    },
+    "worker_mem_rss_mib": {
+      "avg": 191.326,
+      "p50": 191.1172,
+      "p95": 273.7891,
+      "max": 273.7891
+    },
+    "atelet_mem_ws_mib": {
+      "avg": 52.6839,
+      "p50": 52.1719,
+      "p95": 53.6875,
+      "max": 53.6875
+    },
+    "node_disk_write_mbs": {
+      "avg": 17.1438,
+      "p50": 21.3478,
+      "p95": 22.8955,
+      "max": 22.8955
+    },
+    "node_cpu_psi_pct": {
+      "avg": 37.8183,
+      "p50": 46.8884,
+      "p95": 49.5384,
+      "max": 49.5384
+    },
+    "node_mem_psi_pct": {
+      "avg": 0.0,
+      "p50": 0.0,
+      "p95": 0.0001,
+      "max": 0.0001
+    },
+    "node_io_psi_pct": {
+      "avg": 0.4947,
+      "p50": 0.5073,
+      "p95": 0.5664,
+      "max": 0.5664
+    }
+  },
+  "glutton_100_actors_gvisor_baseline": {
+    "tag": "gvisor_baseline",
+    "pool": "gvisor-pool",
+    "users": 100,
+    "duration_s": 60,
+    "window": [
+      1793074607,
+      1793074660
+    ],
+    "client_ops": {
+      "CreateActor": {
+        "reqs": 100,
+        "fails": 0,
+        "avg_ms": 30,
+        "min_ms": 12,
+        "max_ms": 55,
+        "med_ms": 28,
+        "rps": 1.69,
+        "p50_ms": 32,
+        "p90_ms": 48,
+        "p95_ms": 49,
+        "p99_ms": 55,
+        "p100_ms": 55
+      },
+      "CreateAtespace": {
+        "reqs": 100,
+        "fails": 0,
+        "avg_ms": 13,
+        "min_ms": 1,
+        "max_ms": 44,
+        "med_ms": 9,
+        "rps": 1.69,
+        "p50_ms": 9,
+        "p90_ms": 35,
+        "p95_ms": 37,
+        "p99_ms": 44,
+        "p100_ms": 44
+      },
+      "GluttonPing": {
+        "reqs": 2055,
+        "fails": 0,
+        "avg_ms": 11,
+        "min_ms": 4,
+        "max_ms": 104,
+        "med_ms": 9,
+        "rps": 34.83,
+        "p50_ms": 9,
+        "p90_ms": 18,
+        "p95_ms": 26,
+        "p99_ms": 58,
+        "p100_ms": 100
+      },
+      "ResumeActor": {
+        "reqs": 1955,
+        "fails": 0,
+        "avg_ms": 198,
+        "min_ms": 88,
+        "max_ms": 723,
+        "med_ms": 170,
+        "rps": 33.14,
+        "p50_ms": 170,
+        "p90_ms": 320,
+        "p95_ms": 410,
+        "p99_ms": 560,
+        "p100_ms": 720
+      },
+      "ResumeActorFirstResume": {
+        "reqs": 100,
+        "fails": 0,
+        "avg_ms": 395,
+        "min_ms": 229,
+        "max_ms": 730,
+        "med_ms": 370,
+        "rps": 1.69,
+        "p50_ms": 370,
+        "p90_ms": 540,
+        "p95_ms": 580,
+        "p99_ms": 730,
+        "p100_ms": 730
+      },
+      "SuspendActorAsync": {
+        "reqs": 2053,
+        "fails": 0,
+        "avg_ms": 142,
+        "min_ms": 60,
+        "max_ms": 615,
+        "med_ms": 120,
+        "rps": 34.8,
+        "p50_ms": 120,
+        "p90_ms": 230,
+        "p95_ms": 310,
+        "p99_ms": 460,
+        "p100_ms": 620
+      }
+    },
+    "node_cpu_cores": {
+      "avg": 8.9307,
+      "p50": 11.3361,
+      "p95": 11.6082,
+      "max": 11.6082
+    },
+    "worker_cpu_cores": {
+      "avg": 6.7075,
+      "p50": 7.4969,
+      "p95": 9.614,
+      "max": 9.614
+    },
+    "atelet_cpu_cores": {
+      "avg": 0.2448,
+      "p50": 0.1962,
+      "p95": 0.4106,
+      "max": 0.4106
+    },
+    "node_mem_ws_mib": {
+      "avg": 3266.9648,
+      "p50": 3268.9766,
+      "p95": 3386.6484,
+      "max": 3386.6484
+    },
+    "worker_mem_ws_mib": {
+      "avg": 204.913,
+      "p50": 196.25,
+      "p95": 272.6992,
+      "max": 272.6992
+    },
+    "worker_mem_rss_mib": {
+      "avg": 147.4098,
+      "p50": 135.6328,
+      "p95": 210.7617,
+      "max": 210.7617
+    },
+    "atelet_mem_ws_mib": {
+      "avg": 54.8427,
+      "p50": 54.9922,
+      "p95": 55.6641,
+      "max": 55.6641
+    },
+    "node_disk_write_mbs": {
+      "avg": 17.6972,
+      "p50": 22.3718,
+      "p95": 23.3679,
+      "max": 23.3679
+    },
+    "node_cpu_psi_pct": {
+      "avg": 35.1219,
+      "p50": 41.0249,
+      "p95": 46.1964,
+      "max": 46.1964
+    },
+    "node_mem_psi_pct": {
+      "avg": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "max": 0.0
+    },
+    "node_io_psi_pct": {
+      "avg": 0.6718,
+      "p50": 0.5768,
+      "p95": 0.969,
+      "max": 0.969
+    }
+  },
+  "glutton_250_actors_gvisor_baseline": {
+    "tag": "gvisor_baseline",
+    "pool": "gvisor-pool",
+    "users": 50,
+    "duration_s": 75,
+    "window": [
+      1793074708,
+      1793074776
+    ],
+    "client_ops": {
+      "CreateActor": {
+        "reqs": 250,
+        "fails": 0,
+        "avg_ms": 25,
+        "min_ms": 3,
+        "max_ms": 83,
+        "med_ms": 15,
+        "rps": 3.38,
+        "p50_ms": 15,
+        "p90_ms": 67,
+        "p95_ms": 74,
+        "p99_ms": 82,
+        "p100_ms": 83
+      },
+      "CreateAtespace": {
+        "reqs": 50,
+        "fails": 0,
+        "avg_ms": 13,
+        "min_ms": 1,
+        "max_ms": 43,
+        "med_ms": 6,
+        "rps": 0.68,
+        "p50_ms": 6,
+        "p90_ms": 29,
+        "p95_ms": 31,
+        "p99_ms": 43,
+        "p100_ms": 43
+      },
+      "GluttonPing": {
+        "reqs": 2083,
+        "fails": 0,
+        "avg_ms": 9,
+        "min_ms": 4,
+        "max_ms": 44,
+        "med_ms": 8,
+        "rps": 28.15,
+        "p50_ms": 8,
+        "p90_ms": 14,
+        "p95_ms": 18,
+        "p99_ms": 26,
+        "p100_ms": 44
+      },
+      "ResumeActor": {
+        "reqs": 1833,
+        "fails": 0,
+        "avg_ms": 154,
+        "min_ms": 88,
+        "max_ms": 336,
+        "med_ms": 140,
+        "rps": 24.77,
+        "p50_ms": 140,
+        "p90_ms": 230,
+        "p95_ms": 250,
+        "p99_ms": 300,
+        "p100_ms": 340
+      },
+      "ResumeActorFirstResume": {
+        "reqs": 250,
+        "fails": 0,
+        "avg_ms": 173,
+        "min_ms": 89,
+        "max_ms": 371,
+        "med_ms": 150,
+        "rps": 3.38,
+        "p50_ms": 150,
+        "p90_ms": 290,
+        "p95_ms": 310,
+        "p99_ms": 350,
+        "p100_ms": 370
+      },
+      "SuspendActorAsync": {
+        "reqs": 2083,
+        "fails": 0,
+        "avg_ms": 104,
+        "min_ms": 57,
+        "max_ms": 288,
+        "med_ms": 96,
+        "rps": 28.15,
+        "p50_ms": 96,
+        "p90_ms": 150,
+        "p95_ms": 180,
+        "p99_ms": 220,
+        "p100_ms": 290
+      }
+    },
+    "node_cpu_cores": {
+      "avg": 7.9518,
+      "p50": 9.2048,
+      "p95": 9.5526,
+      "max": 9.5526
+    },
+    "worker_cpu_cores": {
+      "avg": 5.6526,
+      "p50": 7.7188,
+      "p95": 7.9383,
+      "max": 7.9383
+    },
+    "atelet_cpu_cores": {
+      "avg": 0.2621,
+      "p50": 0.3179,
+      "p95": 0.3245,
+      "max": 0.3245
+    },
+    "node_mem_ws_mib": {
+      "avg": 3159.8131,
+      "p50": 3158.0391,
+      "p95": 3235.3477,
+      "max": 3235.3477
+    },
+    "worker_mem_ws_mib": {
+      "avg": 195.3345,
+      "p50": 181.2734,
+      "p95": 330.9766,
+      "max": 330.9766
+    },
+    "worker_mem_rss_mib": {
+      "avg": 118.998,
+      "p50": 117.4258,
+      "p95": 205.5859,
+      "max": 205.5859
+    },
+    "atelet_mem_ws_mib": {
+      "avg": 62.1691,
+      "p50": 63.2773,
+      "p95": 64.7617,
+      "max": 64.7617
+    },
+    "node_disk_write_mbs": {
+      "avg": 125.0063,
+      "p50": 154.0385,
+      "p95": 175.121,
+      "max": 175.121
+    },
+    "node_cpu_psi_pct": {
+      "avg": 26.0113,
+      "p50": 29.4448,
+      "p95": 31.7257,
+      "max": 31.7257
+    },
+    "node_mem_psi_pct": {
+      "avg": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "max": 0.0
+    },
+    "node_io_psi_pct": {
+      "avg": 3.6683,
+      "p50": 3.9064,
+      "p95": 5.153,
+      "max": 5.153
+    }
+  },
+  "glutton_25_actors_gvisor_frozen": {
+    "tag": "gvisor_frozen",
+    "pool": "gvisor-pool",
+    "users": 25,
+    "duration_s": 60,
+    "window": [
+      1793074888,
+      1793074941
+    ],
+    "client_ops": {
+      "CreateActor": {
+        "reqs": 25,
+        "fails": 0,
+        "avg_ms": 23,
+        "min_ms": 6,
+        "max_ms": 53,
+        "med_ms": 13,
+        "rps": 0.42,
+        "p50_ms": 13,
+        "p90_ms": 53,
+        "p95_ms": 53,
+        "p99_ms": 53,
+        "p100_ms": 53
+      },
+      "CreateAtespace": {
+        "reqs": 25,
+        "fails": 0,
+        "avg_ms": 20,
+        "min_ms": 1,
+        "max_ms": 35,
+        "med_ms": 29,
+        "rps": 0.42,
+        "p50_ms": 29,
+        "p90_ms": 35,
+        "p95_ms": 35,
+        "p99_ms": 35,
+        "p100_ms": 35
+      },
+      "GluttonPing": {
+        "reqs": 1430,
+        "fails": 0,
+        "avg_ms": 4,
+        "min_ms": 3,
+        "max_ms": 45,
+        "med_ms": 4,
+        "rps": 24.24,
+        "p50_ms": 4,
+        "p90_ms": 7,
+        "p95_ms": 8,
+        "p99_ms": 13,
+        "p100_ms": 45
+      },
+      "ResumeActor": {
+        "reqs": 1407,
+        "fails": 0,
+        "avg_ms": 12,
+        "min_ms": 9,
+        "max_ms": 55,
+        "med_ms": 12,
+        "rps": 23.85,
+        "p50_ms": 12,
+        "p90_ms": 15,
+        "p95_ms": 16,
+        "p99_ms": 22,
+        "p100_ms": 55
+      },
+      "ResumeActorFirstResume": {
+        "reqs": 25,
+        "fails": 0,
+        "avg_ms": 228,
+        "min_ms": 119,
+        "max_ms": 337,
+        "med_ms": 220,
+        "rps": 0.42,
+        "p50_ms": 220,
+        "p90_ms": 330,
+        "p95_ms": 340,
+        "p99_ms": 340,
+        "p100_ms": 340
+      },
+      "SuspendActorAsync": {
+        "reqs": 1430,
+        "fails": 0,
+        "avg_ms": 10,
+        "min_ms": 7,
+        "max_ms": 60,
+        "med_ms": 10,
+        "rps": 24.24,
+        "p50_ms": 10,
+        "p90_ms": 13,
+        "p95_ms": 14,
+        "p99_ms": 18,
+        "p100_ms": 60
+      }
+    },
+    "node_cpu_cores": {
+      "avg": 0.5794,
+      "p50": 0.5833,
+      "p95": 0.7665,
+      "max": 0.7665
+    },
+    "worker_cpu_cores": {
+      "avg": 0.229,
+      "p50": 0.2329,
+      "p95": 0.3552,
+      "max": 0.3552
+    },
+    "atelet_cpu_cores": {
+      "avg": 0.0576,
+      "p50": 0.0681,
+      "p95": 0.082,
+      "max": 0.082
+    },
+    "node_mem_ws_mib": {
+      "avg": 3561.6942,
+      "p50": 3606.1172,
+      "p95": 3619.0078,
+      "max": 3619.0078
+    },
+    "worker_mem_ws_mib": {
+      "avg": 681.1719,
+      "p50": 711.7539,
+      "p95": 737.8516,
+      "max": 737.8516
+    },
+    "worker_mem_rss_mib": {
+      "avg": 486.8942,
+      "p50": 506.2422,
+      "p95": 518.0039,
+      "max": 518.0039
+    },
+    "atelet_mem_ws_mib": {
+      "avg": 103.2248,
+      "p50": 106.1484,
+      "p95": 107.0781,
+      "max": 107.0781
+    },
+    "node_disk_write_mbs": {
+      "avg": 2.9844,
+      "p50": 3.1132,
+      "p95": 3.4133,
+      "max": 3.4133
+    },
+    "node_cpu_psi_pct": {
+      "avg": 1.1551,
+      "p50": 0.9457,
+      "p95": 2.0221,
+      "max": 2.0221
+    },
+    "node_mem_psi_pct": {
+      "avg": 0.003,
+      "p50": 0.0,
+      "p95": 0.0082,
+      "max": 0.0082
+    },
+    "node_io_psi_pct": {
+      "avg": 0.3412,
+      "p50": 0.3095,
+      "p95": 0.4681,
+      "max": 0.4681
+    }
+  },
+  "glutton_50_actors_gvisor_frozen": {
+    "tag": "gvisor_frozen",
+    "pool": "gvisor-pool",
+    "users": 50,
+    "duration_s": 60,
+    "window": [
+      1793074990,
+      1793075043
+    ],
+    "client_ops": {
+      "CreateActor": {
+        "reqs": 50,
+        "fails": 0,
+        "avg_ms": 28,
+        "min_ms": 5,
+        "max_ms": 60,
+        "med_ms": 25,
+        "rps": 0.85,
+        "p50_ms": 26,
+        "p90_ms": 52,
+        "p95_ms": 58,
+        "p99_ms": 60,
+        "p100_ms": 60
+      },
+      "CreateAtespace": {
+        "reqs": 50,
+        "fails": 0,
+        "avg_ms": 20,
+        "min_ms": 2,
+        "max_ms": 51,
+        "med_ms": 9,
+        "rps": 0.85,
+        "p50_ms": 9,
+        "p90_ms": 49,
+        "p95_ms": 49,
+        "p99_ms": 51,
+        "p100_ms": 51
+      },
+      "GluttonPing": {
+        "reqs": 2827,
+        "fails": 0,
+        "avg_ms": 5,
+        "min_ms": 3,
+        "max_ms": 49,
+        "med_ms": 5,
+        "rps": 47.92,
+        "p50_ms": 5,
+        "p90_ms": 8,
+        "p95_ms": 9,
+        "p99_ms": 17,
+        "p100_ms": 49
+      },
+      "ResumeActor": {
+        "reqs": 2777,
+        "fails": 0,
+        "avg_ms": 13,
+        "min_ms": 9,
+        "max_ms": 47,
+        "med_ms": 13,
+        "rps": 47.07,
+        "p50_ms": 13,
+        "p90_ms": 18,
+        "p95_ms": 20,
+        "p99_ms": 29,
+        "p100_ms": 47
+      },
+      "ResumeActorFirstResume": {
+        "reqs": 50,
+        "fails": 0,
+        "avg_ms": 259,
+        "min_ms": 146,
+        "max_ms": 402,
+        "med_ms": 260,
+        "rps": 0.85,
+        "p50_ms": 260,
+        "p90_ms": 340,
+        "p95_ms": 360,
+        "p99_ms": 400,
+        "p100_ms": 400
+      },
+      "SuspendActorAsync": {
+        "reqs": 2825,
+        "fails": 0,
+        "avg_ms": 11,
+        "min_ms": 7,
+        "max_ms": 38,
+        "med_ms": 11,
+        "rps": 47.88,
+        "p50_ms": 11,
+        "p90_ms": 15,
+        "p95_ms": 18,
+        "p99_ms": 23,
+        "p100_ms": 38
+      }
+    },
+    "node_cpu_cores": {
+      "avg": 0.9935,
+      "p50": 0.9644,
+      "p95": 1.2867,
+      "max": 1.2867
+    },
+    "worker_cpu_cores": {
+      "avg": 0.5598,
+      "p50": 0.4983,
+      "p95": 1.2325,
+      "max": 1.2325
+    },
+    "atelet_cpu_cores": {
+      "avg": 0.1087,
+      "p50": 0.1252,
+      "p95": 0.1594,
+      "max": 0.1594
+    },
+    "node_mem_ws_mib": {
+      "avg": 4177.9247,
+      "p50": 4186.0938,
+      "p95": 4236.2188,
+      "max": 4236.2188
+    },
+    "worker_mem_ws_mib": {
+      "avg": 1228.6339,
+      "p50": 1363.8867,
+      "p95": 1389.3711,
+      "max": 1389.3711
+    },
+    "worker_mem_rss_mib": {
+      "avg": 871.6019,
+      "p50": 952.6367,
+      "p95": 963.3359,
+      "max": 963.3359
+    },
+    "atelet_mem_ws_mib": {
+      "avg": 108.304,
+      "p50": 108.5312,
+      "p95": 110.1562,
+      "max": 110.1562
+    },
+    "node_disk_write_mbs": {
+      "avg": 4.6194,
+      "p50": 5.2221,
+      "p95": 5.3212,
+      "max": 5.3212
+    },
+    "node_cpu_psi_pct": {
+      "avg": 1.9806,
+      "p50": 1.3592,
+      "p95": 3.6913,
+      "max": 3.6913
+    },
+    "node_mem_psi_pct": {
+      "avg": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "max": 0.0
+    },
+    "node_io_psi_pct": {
+      "avg": 0.3168,
+      "p50": 0.2797,
+      "p95": 0.4284,
+      "max": 0.4284
+    }
+  },
+  "glutton_100_actors_gvisor_frozen": {
+    "tag": "gvisor_frozen",
+    "pool": "gvisor-pool",
+    "users": 100,
+    "duration_s": 60,
+    "window": [
+      1793075090,
+      1793075143
+    ],
+    "client_ops": {
+      "CreateActor": {
+        "reqs": 100,
+        "fails": 0,
+        "avg_ms": 38,
+        "min_ms": 6,
+        "max_ms": 75,
+        "med_ms": 28,
+        "rps": 1.67,
+        "p50_ms": 37,
+        "p90_ms": 69,
+        "p95_ms": 72,
+        "p99_ms": 75,
+        "p100_ms": 75
+      },
+      "CreateAtespace": {
+        "reqs": 100,
+        "fails": 0,
+        "avg_ms": 14,
+        "min_ms": 2,
+        "max_ms": 42,
+        "med_ms": 9,
+        "rps": 1.67,
+        "p50_ms": 9,
+        "p90_ms": 32,
+        "p95_ms": 37,
+        "p99_ms": 42,
+        "p100_ms": 42
+      },
+      "GluttonPing": {
+        "reqs": 2313,
+        "fails": 0,
+        "avg_ms": 4,
+        "min_ms": 3,
+        "max_ms": 68,
+        "med_ms": 4,
+        "rps": 38.55,
+        "p50_ms": 4,
+        "p90_ms": 6,
+        "p95_ms": 8,
+        "p99_ms": 26,
+        "p100_ms": 68
+      },
+      "ResumeActor": {
+        "reqs": 2213,
+        "fails": 0,
+        "avg_ms": 11,
+        "min_ms": 9,
+        "max_ms": 83,
+        "med_ms": 11,
+        "rps": 36.88,
+        "p50_ms": 11,
+        "p90_ms": 13,
+        "p95_ms": 14,
+        "p99_ms": 19,
+        "p100_ms": 83
+      },
+      "ResumeActorFirstResume": {
+        "reqs": 100,
+        "fails": 0,
+        "avg_ms": 342,
+        "min_ms": 137,
+        "max_ms": 476,
+        "med_ms": 340,
+        "rps": 1.67,
+        "p50_ms": 340,
+        "p90_ms": 430,
+        "p95_ms": 450,
+        "p99_ms": 480,
+        "p100_ms": 480
+      },
+      "SuspendActorAsync": {
+        "reqs": 2312,
+        "fails": 0,
+        "avg_ms": 9,
+        "min_ms": 7,
+        "max_ms": 74,
+        "med_ms": 9,
+        "rps": 38.53,
+        "p50_ms": 9,
+        "p90_ms": 12,
+        "p95_ms": 14,
+        "p99_ms": 27,
+        "p100_ms": 74
+      }
+    },
+    "node_cpu_cores": {
+      "avg": 1.2063,
+      "p50": 1.211,
+      "p95": 1.888,
+      "max": 1.888
+    },
+    "worker_cpu_cores": {
+      "avg": 0.565,
+      "p50": 0.5237,
+      "p95": 1.0316,
+      "max": 1.0316
+    },
+    "atelet_cpu_cores": {
+      "avg": 0.1132,
+      "p50": 0.1364,
+      "p95": 0.1575,
+      "max": 0.1575
+    },
+    "node_mem_ws_mib": {
+      "avg": 5265.7358,
+      "p50": 5307.2266,
+      "p95": 5412.0078,
+      "max": 5412.0078
+    },
+    "worker_mem_ws_mib": {
+      "avg": 2198.8846,
+      "p50": 2502.3789,
+      "p95": 2632.9805,
+      "max": 2632.9805
+    },
+    "worker_mem_rss_mib": {
+      "avg": 1567.445,
+      "p50": 1807.7227,
+      "p95": 1826.6797,
+      "max": 1826.6797
+    },
+    "atelet_mem_ws_mib": {
+      "avg": 92.4382,
+      "p50": 106.332,
+      "p95": 111.4883,
+      "max": 111.4883
+    },
+    "node_disk_write_mbs": {
+      "avg": 4.7338,
+      "p50": 4.9806,
+      "p95": 5.6274,
+      "max": 5.6274
+    },
+    "node_cpu_psi_pct": {
+      "avg": 2.9568,
+      "p50": 1.8704,
+      "p95": 6.7047,
+      "max": 6.7047
+    },
+    "node_mem_psi_pct": {
+      "avg": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "max": 0.0
+    },
+    "node_io_psi_pct": {
+      "avg": 0.3761,
+      "p50": 0.2724,
+      "p95": 0.5816,
+      "max": 0.5816
+    }
+  },
+  "glutton_250_actors_gvisor_frozen": {
+    "tag": "gvisor_frozen",
+    "pool": "gvisor-pool",
+    "users": 50,
+    "duration_s": 75,
+    "window": [
+      1793075196,
+      1793075264
+    ],
+    "client_ops": {
+      "CreateActor": {
+        "reqs": 250,
+        "fails": 0,
+        "avg_ms": 23,
+        "min_ms": 3,
+        "max_ms": 83,
+        "med_ms": 16,
+        "rps": 3.38,
+        "p50_ms": 16,
+        "p90_ms": 54,
+        "p95_ms": 70,
+        "p99_ms": 81,
+        "p100_ms": 83
+      },
+      "CreateAtespace": {
+        "reqs": 50,
+        "fails": 0,
+        "avg_ms": 98,
+        "min_ms": 2,
+        "max_ms": 244,
+        "med_ms": 6,
+        "rps": 0.68,
+        "p50_ms": 8,
+        "p90_ms": 240,
+        "p95_ms": 240,
+        "p99_ms": 240,
+        "p100_ms": 240
+      },
+      "GluttonPing": {
+        "reqs": 2417,
+        "fails": 0,
+        "avg_ms": 4,
+        "min_ms": 3,
+        "max_ms": 55,
+        "med_ms": 4,
+        "rps": 32.66,
+        "p50_ms": 4,
+        "p90_ms": 7,
+        "p95_ms": 9,
+        "p99_ms": 19,
+        "p100_ms": 55
+      },
+      "ResumeActor": {
+        "reqs": 2168,
+        "fails": 0,
+        "avg_ms": 11,
+        "min_ms": 9,
+        "max_ms": 37,
+        "med_ms": 11,
+        "rps": 29.3,
+        "p50_ms": 11,
+        "p90_ms": 13,
+        "p95_ms": 15,
+        "p99_ms": 18,
+        "p100_ms": 37
+      },
+      "ResumeActorFirstResume": {
+        "reqs": 250,
+        "fails": 0,
+        "avg_ms": 162,
+        "min_ms": 90,
+        "max_ms": 377,
+        "med_ms": 140,
+        "rps": 3.38,
+        "p50_ms": 140,
+        "p90_ms": 270,
+        "p95_ms": 290,
+        "p99_ms": 350,
+        "p100_ms": 380
+      },
+      "SuspendActorAsync": {
+        "reqs": 2414,
+        "fails": 0,
+        "avg_ms": 9,
+        "min_ms": 7,
+        "max_ms": 40,
+        "med_ms": 9,
+        "rps": 32.62,
+        "p50_ms": 9,
+        "p90_ms": 12,
+        "p95_ms": 13,
+        "p99_ms": 19,
+        "p100_ms": 40
+      }
+    },
+    "node_cpu_cores": {
+      "avg": 1.6995,
+      "p50": 1.2997,
+      "p95": 3.4777,
+      "max": 3.4777
+    },
+    "worker_cpu_cores": {
+      "avg": 1.028,
+      "p50": 0.7918,
+      "p95": 3.3437,
+      "max": 3.3437
+    },
+    "atelet_cpu_cores": {
+      "avg": 0.1262,
+      "p50": 0.1431,
+      "p95": 0.1995,
+      "max": 0.1995
+    },
+    "node_mem_ws_mib": {
+      "avg": 8026.1602,
+      "p50": 8459.707,
+      "p95": 8775.3555,
+      "max": 8775.3555
+    },
+    "worker_mem_ws_mib": {
+      "avg": 5223.1105,
+      "p50": 5898.4297,
+      "p95": 6215.5625,
+      "max": 6215.5625
+    },
+    "worker_mem_rss_mib": {
+      "avg": 3696.8136,
+      "p50": 4199.5898,
+      "p95": 4246.6016,
+      "max": 4246.6016
+    },
+    "atelet_mem_ws_mib": {
+      "avg": 61.7238,
+      "p50": 63.6484,
+      "p95": 64.1523,
+      "max": 64.1523
+    },
+    "node_disk_write_mbs": {
+      "avg": 5.5113,
+      "p50": 4.8278,
+      "p95": 9.0555,
+      "max": 9.0555
+    },
+    "node_cpu_psi_pct": {
+      "avg": 3.373,
+      "p50": 1.2169,
+      "p95": 9.4375,
+      "max": 9.4375
+    },
+    "node_mem_psi_pct": {
+      "avg": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "max": 0.0
+    },
+    "node_io_psi_pct": {
+      "avg": 0.5453,
+      "p50": 0.3465,
+      "p95": 1.2352,
+      "max": 1.2352
+    }
+  },
+  "glutton_25_actors_microvm": {
+    "tag": "microvm",
+    "pool": "microvm-pool",
+    "users": 25,
+    "duration_s": 60,
+    "window": [
+      1793076024,
+      1793076077
+    ],
+    "client_ops": {
+      "CreateActor": {
+        "reqs": 25,
+        "fails": 0,
+        "avg_ms": 24,
+        "min_ms": 7,
+        "max_ms": 48,
+        "med_ms": 19,
+        "rps": 0.42,
+        "p50_ms": 19,
+        "p90_ms": 46,
+        "p95_ms": 47,
+        "p99_ms": 48,
+        "p100_ms": 48
+      },
+      "CreateAtespace": {
+        "reqs": 25,
+        "fails": 0,
+        "avg_ms": 140,
+        "min_ms": 2,
+        "max_ms": 238,
+        "med_ms": 230,
+        "rps": 0.42,
+        "p50_ms": 230,
+        "p90_ms": 240,
+        "p95_ms": 240,
+        "p99_ms": 240,
+        "p100_ms": 240
+      },
+      "GluttonPing": {
+        "reqs": 994,
+        "fails": 0,
+        "avg_ms": 17,
+        "min_ms": 5,
+        "max_ms": 140,
+        "med_ms": 13,
+        "rps": 16.85,
+        "p50_ms": 13,
+        "p90_ms": 31,
+        "p95_ms": 45,
+        "p99_ms": 100,
+        "p100_ms": 140
+      },
+      "ResumeActor": {
+        "reqs": 969,
+        "fails": 0,
+        "avg_ms": 257,
+        "min_ms": 115,
+        "max_ms": 1013,
+        "med_ms": 240,
+        "rps": 16.42,
+        "p50_ms": 240,
+        "p90_ms": 370,
+        "p95_ms": 450,
+        "p99_ms": 680,
+        "p100_ms": 1000
+      },
+      "ResumeActorFirstResume": {
+        "reqs": 25,
+        "fails": 0,
+        "avg_ms": 1793,
+        "min_ms": 828,
+        "max_ms": 2874,
+        "med_ms": 1600,
+        "rps": 0.42,
+        "p50_ms": 1600,
+        "p90_ms": 2600,
+        "p95_ms": 2600,
+        "p99_ms": 2900,
+        "p100_ms": 2900
+      },
+      "SuspendActorAsync": {
+        "reqs": 993,
+        "fails": 0,
+        "avg_ms": 167,
+        "min_ms": 77,
+        "max_ms": 562,
+        "med_ms": 160,
+        "rps": 16.83,
+        "p50_ms": 160,
+        "p90_ms": 240,
+        "p95_ms": 280,
+        "p99_ms": 410,
+        "p100_ms": 560
+      }
+    },
+    "node_cpu_cores": {
+      "avg": 3.3737,
+      "p50": 4.3623,
+      "p95": 4.8043,
+      "max": 4.8043
+    },
+    "worker_cpu_cores": {
+      "avg": 2.2069,
+      "p50": 1.9673,
+      "p95": 3.8045,
+      "max": 3.8045
+    },
+    "atelet_cpu_cores": {
+      "avg": 0.2647,
+      "p50": 0.3136,
+      "p95": 0.3867,
+      "max": 0.3867
+    },
+    "node_mem_ws_mib": {
+      "avg": 3527.6957,
+      "p50": 3546.9141,
+      "p95": 3826.8984,
+      "max": 3826.8984
+    },
+    "worker_mem_ws_mib": {
+      "avg": 407.7784,
+      "p50": 256.0742,
+      "p95": 835.6836,
+      "max": 835.6836
+    },
+    "worker_mem_rss_mib": {
+      "avg": 45.1122,
+      "p50": 43.375,
+      "p95": 58.8633,
+      "max": 58.8633
+    },
+    "atelet_mem_ws_mib": {
+      "avg": 73.555,
+      "p50": 73.7969,
+      "p95": 75.2188,
+      "max": 75.2188
+    },
+    "node_disk_write_mbs": {
+      "avg": 9.5002,
+      "p50": 6.168,
+      "p95": 16.9842,
+      "max": 16.9842
+    },
+    "node_cpu_psi_pct": {
+      "avg": 30.6025,
+      "p50": 39.0161,
+      "p95": 41.1856,
+      "max": 41.1856
+    },
+    "node_mem_psi_pct": {
+      "avg": 0.0006,
+      "p50": 0.0,
+      "p95": 0.0021,
+      "max": 0.0021
+    },
+    "node_io_psi_pct": {
+      "avg": 0.909,
+      "p50": 0.7074,
+      "p95": 1.3456,
+      "max": 1.3456
+    }
+  },
+  "glutton_50_actors_microvm": {
+    "tag": "microvm",
+    "pool": "microvm-pool",
+    "users": 50,
+    "duration_s": 60,
+    "window": [
+      1793076126,
+      1793076179
+    ],
+    "client_ops": {
+      "CreateActor": {
+        "reqs": 50,
+        "fails": 0,
+        "avg_ms": 24,
+        "min_ms": 6,
+        "max_ms": 47,
+        "med_ms": 18,
+        "rps": 0.85,
+        "p50_ms": 18,
+        "p90_ms": 44,
+        "p95_ms": 45,
+        "p99_ms": 47,
+        "p100_ms": 47
+      },
+      "CreateAtespace": {
+        "reqs": 50,
+        "fails": 0,
+        "avg_ms": 95,
+        "min_ms": 1,
+        "max_ms": 238,
+        "med_ms": 9,
+        "rps": 0.85,
+        "p50_ms": 9,
+        "p90_ms": 240,
+        "p95_ms": 240,
+        "p99_ms": 240,
+        "p100_ms": 240
+      },
+      "GluttonPing": {
+        "reqs": 1086,
+        "fails": 0,
+        "avg_ms": 81,
+        "min_ms": 8,
+        "max_ms": 288,
+        "med_ms": 72,
+        "rps": 18.41,
+        "p50_ms": 72,
+        "p90_ms": 140,
+        "p95_ms": 170,
+        "p99_ms": 230,
+        "p100_ms": 290
+      },
+      "ResumeActor": {
+        "reqs": 1038,
+        "fails": 0,
+        "avg_ms": 958,
+        "min_ms": 166,
+        "max_ms": 1833,
+        "med_ms": 950,
+        "rps": 17.59,
+        "p50_ms": 950,
+        "p90_ms": 1300,
+        "p95_ms": 1500,
+        "p99_ms": 1700,
+        "p100_ms": 1800
+      },
+      "ResumeActorFirstResume": {
+        "reqs": 50,
+        "fails": 0,
+        "avg_ms": 1217,
+        "min_ms": 529,
+        "max_ms": 2119,
+        "med_ms": 1300,
+        "rps": 0.85,
+        "p50_ms": 1300,
+        "p90_ms": 1800,
+        "p95_ms": 1900,
+        "p99_ms": 2100,
+        "p100_ms": 2100
+      },
+      "SuspendActorAsync": {
+        "reqs": 1071,
+        "fails": 0,
+        "avg_ms": 638,
+        "min_ms": 100,
+        "max_ms": 4128,
+        "med_ms": 590,
+        "rps": 18.15,
+        "p50_ms": 590,
+        "p90_ms": 900,
+        "p95_ms": 1000,
+        "p99_ms": 2000,
+        "p100_ms": 4100
+      }
+    },
+    "node_cpu_cores": {
+      "avg": 4.4903,
+      "p50": 5.5991,
+      "p95": 5.6756,
+      "max": 5.6756
+    },
+    "worker_cpu_cores": {
+      "avg": 3.1373,
+      "p50": 3.8656,
+      "p95": 4.6161,
+      "max": 4.6161
+    },
+    "atelet_cpu_cores": {
+      "avg": 0.3456,
+      "p50": 0.3719,
+      "p95": 0.4441,
+      "max": 0.4441
+    },
+    "node_mem_ws_mib": {
+      "avg": 4580.8161,
+      "p50": 4698.4531,
+      "p95": 4810.207,
+      "max": 4810.207
+    },
+    "worker_mem_ws_mib": {
+      "avg": 1397.5316,
+      "p50": 1541.5586,
+      "p95": 1586.332,
+      "max": 1586.332
+    },
+    "worker_mem_rss_mib": {
+      "avg": 74.6886,
+      "p50": 78.2031,
+      "p95": 84.6367,
+      "max": 84.6367
+    },
+    "atelet_mem_ws_mib": {
+      "avg": 79.3335,
+      "p50": 79.9297,
+      "p95": 80.6445,
+      "max": 80.6445
+    },
+    "node_disk_write_mbs": {
+      "avg": 40.9579,
+      "p50": 57.0878,
+      "p95": 70.7857,
+      "max": 70.7857
+    },
+    "node_cpu_psi_pct": {
+      "avg": 71.4571,
+      "p50": 90.3712,
+      "p95": 90.9985,
+      "max": 90.9985
+    },
+    "node_mem_psi_pct": {
+      "avg": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "max": 0.0
+    },
+    "node_io_psi_pct": {
+      "avg": 3.9711,
+      "p50": 4.9983,
+      "p95": 7.424,
+      "max": 7.424
+    }
+  },
+  "glutton_100_actors_microvm": {
+    "tag": "microvm",
+    "pool": "microvm-pool",
+    "users": 100,
+    "duration_s": 60,
+    "window": [
+      1793076242,
+      1793076295
+    ],
+    "client_ops": {
+      "ResumeActorFirstResume": {
+        "reqs": 100,
+        "fails": 0,
+        "avg_ms": 2407,
+        "min_ms": 627,
+        "max_ms": 4943,
+        "med_ms": 2400,
+        "rps": 1.69,
+        "p50_ms": 2400,
+        "p90_ms": 4100,
+        "p95_ms": 4600,
+        "p99_ms": 4900,
+        "p100_ms": 4900
+      },
+      "SuspendActorAsync": {
+        "reqs": 345,
+        "fails": 0,
+        "avg_ms": 9198,
+        "min_ms": 73,
+        "max_ms": 47639,
+        "med_ms": 3000,
+        "rps": 5.85,
+        "p50_ms": 3000,
+        "p90_ms": 29000,
+        "p95_ms": 34000,
+        "p99_ms": 44000,
+        "p100_ms": 48000
+      },
+      "CreateActor": {
+        "reqs": 100,
+        "fails": 0,
+        "avg_ms": 32,
+        "min_ms": 8,
+        "max_ms": 60,
+        "med_ms": 21,
+        "rps": 1.69,
+        "p50_ms": 39,
+        "p90_ms": 51,
+        "p95_ms": 53,
+        "p99_ms": 60,
+        "p100_ms": 60
+      },
+      "CreateAtespace": {
+        "reqs": 100,
+        "fails": 0,
+        "avg_ms": 14,
+        "min_ms": 1,
+        "max_ms": 45,
+        "med_ms": 8,
+        "rps": 1.69,
+        "p50_ms": 8,
+        "p90_ms": 36,
+        "p95_ms": 36,
+        "p99_ms": 45,
+        "p100_ms": 45
+      },
+      "GluttonPing": {
+        "reqs": 421,
+        "fails": 0,
+        "avg_ms": 100,
+        "min_ms": 5,
+        "max_ms": 1218,
+        "med_ms": 12,
+        "rps": 7.14,
+        "p50_ms": 12,
+        "p90_ms": 310,
+        "p95_ms": 490,
+        "p99_ms": 1000,
+        "p100_ms": 1200
+      },
+      "ResumeActor": {
+        "reqs": 322,
+        "fails": 0,
+        "avg_ms": 1240,
+        "min_ms": 123,
+        "max_ms": 26145,
+        "med_ms": 230,
+        "rps": 5.46,
+        "p50_ms": 230,
+        "p90_ms": 3400,
+        "p95_ms": 5100,
+        "p99_ms": 16000,
+        "p100_ms": 26000
+      }
+    },
+    "node_cpu_cores": {
+      "avg": 1.8847,
+      "p50": 1.3159,
+      "p95": 3.3156,
+      "max": 3.3156
+    },
+    "worker_cpu_cores": {
+      "avg": 1.1145,
+      "p50": 1.2163,
+      "p95": 2.2688,
+      "max": 2.2688
+    },
+    "atelet_cpu_cores": {
+      "avg": 0.1235,
+      "p50": 0.0918,
+      "p95": 0.3015,
+      "max": 0.3015
+    },
+    "node_mem_ws_mib": {
+      "avg": 3814.9439,
+      "p50": 3350.3906,
+      "p95": 6254.3945,
+      "max": 6254.3945
+    },
+    "worker_mem_ws_mib": {
+      "avg": 781.7397,
+      "p50": 538.4023,
+      "p95": 1378.8867,
+      "max": 1378.8867
+    },
+    "worker_mem_rss_mib": {
+      "avg": 59.7947,
+      "p50": 46.3477,
+      "p95": 85.1602,
+      "max": 85.1602
+    },
+    "atelet_mem_ws_mib": {
+      "avg": 110.63,
+      "p50": 101.0547,
+      "p95": 135.4219,
+      "max": 135.4219
+    },
+    "node_disk_write_mbs": {
+      "avg": 232.598,
+      "p50": 301.7296,
+      "p95": 335.9905,
+      "max": 335.9905
+    },
+    "node_cpu_psi_pct": {
+      "avg": 20.9132,
+      "p50": 13.4508,
+      "p95": 49.6852,
+      "max": 49.6852
+    },
+    "node_mem_psi_pct": {
+      "avg": 0.0,
+      "p50": 0.0,
+      "p95": 0.0001,
+      "max": 0.0001
+    },
+    "node_io_psi_pct": {
+      "avg": 64.5421,
+      "p50": 82.9736,
+      "p95": 95.6163,
+      "max": 95.6163
+    }
+  },
+  "glutton_250_actors_microvm": {
+    "tag": "microvm",
+    "pool": "microvm-pool",
+    "users": 50,
+    "duration_s": 75,
+    "window": [
+      1793076359,
+      1793076427
+    ],
+    "client_ops": {
+      "CreateActor": {
+        "reqs": 250,
+        "fails": 0,
+        "avg_ms": 23,
+        "min_ms": 2,
+        "max_ms": 89,
+        "med_ms": 15,
+        "rps": 3.38,
+        "p50_ms": 16,
+        "p90_ms": 54,
+        "p95_ms": 72,
+        "p99_ms": 85,
+        "p100_ms": 89
+      },
+      "CreateAtespace": {
+        "reqs": 50,
+        "fails": 0,
+        "avg_ms": 17,
+        "min_ms": 2,
+        "max_ms": 43,
+        "med_ms": 6,
+        "rps": 0.68,
+        "p50_ms": 8,
+        "p90_ms": 41,
+        "p95_ms": 42,
+        "p99_ms": 43,
+        "p100_ms": 43
+      },
+      "GluttonPing": {
+        "reqs": 448,
+        "fails": 0,
+        "avg_ms": 45,
+        "min_ms": 4,
+        "max_ms": 340,
+        "med_ms": 14,
+        "rps": 6.05,
+        "p50_ms": 14,
+        "p90_ms": 130,
+        "p95_ms": 170,
+        "p99_ms": 210,
+        "p100_ms": 340
+      },
+      "ResumeActorFirstResume": {
+        "reqs": 246,
+        "fails": 0,
+        "avg_ms": 4911,
+        "min_ms": 281,
+        "max_ms": 63570,
+        "med_ms": 1300,
+        "rps": 3.32,
+        "p50_ms": 1300,
+        "p90_ms": 14000,
+        "p95_ms": 17000,
+        "p99_ms": 27000,
+        "p100_ms": 64000
+      },
+      "SuspendActorAsync": {
+        "reqs": 417,
+        "fails": 0,
+        "avg_ms": 2900,
+        "min_ms": 72,
+        "max_ms": 42404,
+        "med_ms": 390,
+        "rps": 5.64,
+        "p50_ms": 390,
+        "p90_ms": 7900,
+        "p95_ms": 22000,
+        "p99_ms": 38000,
+        "p100_ms": 42000
+      },
+      "ResumeActor": {
+        "reqs": 202,
+        "fails": 0,
+        "avg_ms": 602,
+        "min_ms": 125,
+        "max_ms": 4075,
+        "med_ms": 330,
+        "rps": 2.73,
+        "p50_ms": 330,
+        "p90_ms": 1400,
+        "p95_ms": 2000,
+        "p99_ms": 3700,
+        "p100_ms": 4100
+      }
+    },
+    "node_cpu_cores": {
+      "avg": 1.7756,
+      "p50": 1.6215,
+      "p95": 3.282,
+      "max": 3.282
+    },
+    "worker_cpu_cores": {
+      "avg": 1.1396,
+      "p50": 0.8553,
+      "p95": 2.617,
+      "max": 2.617
+    },
+    "atelet_cpu_cores": {
+      "avg": 0.1977,
+      "p50": 0.083,
+      "p95": 0.6408,
+      "max": 0.6408
+    },
+    "node_mem_ws_mib": {
+      "avg": 3481.6083,
+      "p50": 3385.3945,
+      "p95": 4303.4844,
+      "max": 4303.4844
+    },
+    "worker_mem_ws_mib": {
+      "avg": 931.2068,
+      "p50": 942.9336,
+      "p95": 1381.0,
+      "max": 1381.0
+    },
+    "worker_mem_rss_mib": {
+      "avg": 54.6655,
+      "p50": 54.4062,
+      "p95": 69.4648,
+      "max": 69.4648
+    },
+    "atelet_mem_ws_mib": {
+      "avg": 142.846,
+      "p50": 145.7656,
+      "p95": 160.6602,
+      "max": 160.6602
+    },
+    "node_disk_write_mbs": {
+      "avg": 259.5244,
+      "p50": 335.9967,
+      "p95": 336.0111,
+      "max": 336.0111
+    },
+    "node_cpu_psi_pct": {
+      "avg": 18.5334,
+      "p50": 12.977,
+      "p95": 46.561,
+      "max": 46.561
+    },
+    "node_mem_psi_pct": {
+      "avg": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "max": 0.0
+    },
+    "node_io_psi_pct": {
+      "avg": 75.0264,
+      "p50": 97.5468,
+      "p95": 99.234,
+      "max": 99.234
+    }
+  }
+}
